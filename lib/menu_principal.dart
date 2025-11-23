@@ -17,69 +17,6 @@ class MenuPrincipal extends StatelessWidget {
               ),
             ),
 
-
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 220),
-                  Container(
-                    width: 350,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/titulo.png'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 100),
-
-                  // Botón para iniciar el juego
-                  _BotonMenu(
-                    texto: 'Jugar',
-                    colorTexto: Colors.black,
-                    icono: Icons.play_arrow,
-                    imagenFondo: 'assets/fondoBotones.jpg',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PantallaJugar()),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 30),
-
-                  //Boton opciones
-                  _BotonMenu (
-                    texto: 'Opciones',
-                    colorTexto: Colors.black,
-                    icono: Icons.settings,
-                    imagenFondo: 'assets/fondoBotones.jpg',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MenuOpciones()),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 30),
-
-                  //Boton Salir
-                  _BotonMenu (
-                    texto: 'Salir',
-                    colorTexto: Colors.black,
-                    icono: Icons.exit_to_app,
-                    imagenFondo: 'assets/fondoBotones.jpg',
-                    onPressed: () {
-                      _mostrarDialogoSalir(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-
             //charmander
             Positioned(
               bottom: 40,
@@ -143,6 +80,70 @@ class MenuPrincipal extends StatelessWidget {
                 ),
               ),
             ),
+
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 220),
+                  Container(
+                    width: 350,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/titulo.png'),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 100),
+
+                  // Botón para iniciar el juego
+                  _BotonMenu(
+                    texto: 'Jugar',
+                    colorTexto: Colors.black,
+                    icono: Icons.play_arrow,
+                    imagenFondo: 'assets/fondoBotones.jpg',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PantallaJugar()),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 30),
+
+                  //Boton opciones
+                  _BotonMenu (
+                    texto: 'Opciones',
+                    colorTexto: Colors.black,
+                    icono: Icons.settings,
+                    imagenFondo: 'assets/fondoBotones.jpg',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MenuOpciones()),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 30),
+
+                  //Boton Salir
+                  _BotonMenu (
+                    texto: 'Salir',
+                    colorTexto: Colors.black,
+                    icono: Icons.exit_to_app,
+                    imagenFondo: 'assets/fondoBotones.jpg',
+                    onPressed: () {
+                      _mostrarDialogoSalir(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+
 
           ],
         ),
