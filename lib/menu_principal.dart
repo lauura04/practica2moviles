@@ -116,7 +116,7 @@ class MenuPrincipal extends StatelessWidget {
 
                   //Boton opciones
                   _BotonMenu (
-                    texto: 'Opciones',
+                    texto: 'Ajustes',
                     colorTexto: Colors.black,
                     icono: Icons.settings,
                     imagenFondo: 'assets/fondoBotones.jpg',
