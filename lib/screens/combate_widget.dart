@@ -14,17 +14,17 @@ class CombatWidget extends StatelessWidget {
     return Consumer<GameProvider>(
       builder: (context, gameProvider, child) {
         final activePokemon = gameProvider.selectedPokemon!;
-        final enemy = gameProvider.currentEnemy!;
+        final currentEnemy = gameProvider.currentEnemy!;
         final isProcessing = gameProvider.isTurnProcessing;
         final isTeamFull = gameProvider.playerTeam.length >= 6;
         final playerTeam = gameProvider.playerTeam;
-
-        // Se puede cambiar de Pokémon si hay al menos uno más en el equipo que no esté debilitado
         final canSwitch = playerTeam.any((p) => p != activePokemon && p.currentHealth > 0);
+
+        // NEW: Get the next enemy using the new getter
+        final nextEnemy = gameProvider.nextEnemy;
 
         return Stack(
           children: [
-            // Vista principal del combate (panel de equipo a la izquierda, arena a la derecha)
             Row(
               children: [
                 // --- COLUMNA IZQUIERDA: EQUIPO DEL JUGADOR ---
@@ -65,22 +65,57 @@ class CombatWidget extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Información de los combatientes
+                        // --- UPDATED: Seccion de información de combatientes ---
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
+                            // Info del Jugador
                             Text(
                               "${activePokemon.name}\nLv: ${activePokemon.level}\nHealth: ${activePokemon.currentHealth}/${activePokemon.maxHealth}",
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 16, height: 1.4),
                             ),
-                            Text(
-                              "${enemy.name}\nLv: ${enemy.level}\nHealth: ${enemy.currentHealth}/${enemy.maxHealth}",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 16, height: 1.4),
+
+                            // Info de los Enemigos (Actual y Siguiente)
+                            Column(
+                              children: [
+                                // Info del Enemigo Actual
+                                Text(
+                                  "${currentEnemy.name}\nLv: ${currentEnemy.level}\nHealth: ${currentEnemy.currentHealth}/${currentEnemy.maxHealth}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 16, height: 1.4, color: Colors.orangeAccent),
+                                ),
+                                const SizedBox(height: 20),
+
+                                // NEW: Widget para el Próximo Enemigo
+                                if (nextEnemy != null)
+                                  Opacity(
+                                    opacity: 0.7,
+                                    child: Column(
+                                      children: [
+                                        const Text("Next Up:", style: TextStyle(fontSize: 12, color: Colors.white70)),
+                                        const SizedBox(height: 4),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(0.4),
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(color: Colors.white30, width: 1),
+                                          ),
+                                          child: Text(
+                                            "${nextEnemy.name} (Lv: ${nextEnemy.level})",
+                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
                             ),
                           ],
                         ),
+
                         // Log de combate
                         Container(
                           padding: const EdgeInsets.all(12),
@@ -90,31 +125,35 @@ class CombatWidget extends StatelessWidget {
                             style: const TextStyle(fontSize: 18, fontStyle: FontStyle.italic, color: Colors.white70),
                           ),
                         ),
-                        // Botones de acción principales
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                        // Botones de acción
+                        Column(
                           children: [
-                            ElevatedButton(
-                              onPressed: isProcessing ? null : () => gameProvider.performCombatAction('attack'),
-                              child: const Text("Attack"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: isProcessing ? null : () => gameProvider.performCombatAction('attack'),
+                                  child: const Text("Attack"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: isProcessing ? null : () => gameProvider.performCombatAction('heal'),
+                                  child: const Text("Heal"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: (isProcessing || !canSwitch) ? null : () => gameProvider.performCombatAction('switch'),
+                                  child: const Text("Switch"),
+                                ),
+                              ],
                             ),
-                            ElevatedButton(
-                              onPressed: isProcessing ? null : () => gameProvider.performCombatAction('heal'),
-                              child: const Text("Heal"),
-                            ),
-                            ElevatedButton(
-                              onPressed: (isProcessing || !canSwitch) ? null : () => gameProvider.performCombatAction('switch'),
-                              child: const Text("Switch"),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: ElevatedButton(
+                                onPressed: (isProcessing || isTeamFull) ? null : () => gameProvider.performCombatAction('befriend'),
+                                child: const Text("Befriend"),
+                              ),
                             ),
                           ],
-                        ),
-                        // Botón de "Befriend" en una fila separada
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: ElevatedButton(
-                            onPressed: (isProcessing || isTeamFull) ? null : () => gameProvider.performCombatAction('befriend'),
-                            child: const Text("Befriend"),
-                          ),
                         ),
                       ],
                     ),
@@ -124,11 +163,8 @@ class CombatWidget extends StatelessWidget {
             ),
 
             // --- SUPERPOSICIONES (OVERLAYS) ---
-            // Pantalla de selección de curación
             if (gameProvider.gameScreen == GameScreen.selectingHealTarget)
               const HealSelectionWidget(),
-
-            // Pantalla de selección de cambio
             if (gameProvider.gameScreen == GameScreen.selectingSwitchTarget)
               const SwitchSelectionWidget(),
           ],

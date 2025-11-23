@@ -55,6 +55,15 @@ class GameProvider with ChangeNotifier {
   String get combatLog => _combatLog;
   List<Pokemon> get starterPokemonOptions => _starterPokemonOptions;
   bool get isTurnProcessing => _isTurnProcessing;
+  Pokemon? get nextEnemy {
+    final nextIndex = _currentEnemyIndex + 1;
+    // Check if the next index is valid (within the bounds of the enemy list)
+    if (nextIndex < _possibleEnemies.length) {
+      return _possibleEnemies[nextIndex];
+    }
+    // If there is no next enemy (i.e., we are fighting the last one), return null.
+    return null;
+  }
 
   // --- LÓGICA DE COMBATE Y ESTADO ---
 
