@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Juego de Combate',
+      //debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(), // Un tema oscuro queda bien para juegos
       home: MenuPrincipal(),
     );
