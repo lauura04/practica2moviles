@@ -1,167 +1,140 @@
 import 'package:flutter/material.dart';
+import 'ajustes_sonido.dart';
+import 'ajustes_visual.dart';
 
-class MenuOpciones extends StatefulWidget {
-  @override
-  _MenuOpcionesState createState() => _MenuOpcionesState();
-}
-
-class _MenuOpcionesState extends State<MenuOpciones>{
-  bool _sonidoActivado = true;
-  bool _musicaActivada = true;
-  double _volumen = 0.5;
-  //otras configuraciones
-
+class MenuOpciones extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-        appBar: AppBar(
-          title: Text('MenuOpciones'),
-          backgroundColor: Colors.blue,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: (){
-              Navigator.pop(context);
-            },
-          ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pop(context);
+          },
         ),
-        body: Container(
-          color: Colors.blue[50],
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children:[
-              _ItemConfiguration(
-                icono: Icons.volume_up,
-                titulo: 'Sonido',
-                valor: _sonidoActivado,
-                onChanged: (valor) {
-                  setState(() {
-                    _sonidoActivado = valor;
-                  });
-                },
+      ),
+      body: Stack(
+        children: [
+          // Fondo con imagen
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/fondoAjustes.jpg'),
+                fit: BoxFit.cover,
               ),
-              _ItemConfiguration(
-                icono: Icons.music_note,
-                titulo: 'Musica',
-                valor: _musicaActivada,
-                onChanged: (valor) {
-                  setState(() {
-                    _musicaActivada = valor;
-                  });
-                },
-              ),
+            ),
+          ),
 
-              //control volumen
-              Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.volume_down, color: Colors.blue),
-                          SizedBox(width: 10),
-                          Text(
-                            'Volumen',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Slider(
-                        value: _volumen,
-                        onChanged: (valor){
-                          setState(() {
-                            _volumen = valor;
-                          });
-                        },
-                        min: 0,
-                        max: 1,
-                        divisions: 10,
-                        label: '${(_volumen*100).round()}%'
-                      ),
-                    ],
+          Container(
+            color: Colors.black.withOpacity(0.3),
+          ),
+
+          // Contenido principal
+          Center(
+            child: Column(
+              children: [
+                SizedBox(height: 120),
+                Container(
+                  width: 350,
+                  height: 130,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/ajustes.png'),
+                        fit: BoxFit.cover
+                    ),
                   ),
                 ),
-              ),
-              Spacer(),
+                SizedBox(height: 100),
 
-              //guardar configuracion
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: (){
-                    _mostrarMensajeGuardado(context);
+                // Botón AJUSTES DE SONIDO
+                _BotonOpcion(
+                  texto: 'Ajustes de sonido',
+                  imagen: 'assets/chatot.png',
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AjustesSonido()),
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text(
-                    'GUARDAR CONFIGURACION',
-                    style: TextStyle(fontSize: 16),
-                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-    );
-  }
+                SizedBox(height: 100),
 
-  void _mostrarMensajeGuardado(BuildContext context){
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Configuracion guardada'),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
+                // Botón AJUSTES VISUALES
+                _BotonOpcion(
+                  texto: 'Ajustes Visuales',
+                  imagen: 'assets/smeargle.png', // ← Tu imagen visual
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AjustesVisuales()),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+// Widget para los botones de opciones CON IMAGEN
+class _BotonOpcion extends StatelessWidget {
+  final String texto;
+  final String imagen; // ← Cambiado de IconData a String
+  final Color color;
+  final VoidCallback onPressed;
 
-class _ItemConfiguration extends StatelessWidget{
-  final IconData icono;
-  final String titulo;
-  final bool valor;
-  final Function(bool) onChanged;
-
-  const _ItemConfiguration({
-    required this.icono,
-    required this.titulo,
-    required this.valor,
-    required this.onChanged,
+  const _BotonOpcion({
+    required this.texto,
+    required this.imagen,
+    required this.color,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16),
+    return SizedBox(
+      width: 250,
+      height: 80,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white,
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children:[
-                Icon(icono, color: Colors.blue),
-                SizedBox(width: 10),
-                Text(
-                  titulo,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+            // Imagen en lugar de icono
+            Container(
+              width: 64,
+              height: 128,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(imagen),
+                  fit: BoxFit.cover,
                 ),
-              ],
+              ),
             ),
-            Switch(
-              value: valor,
-              onChanged: onChanged,
-              activeColor: Colors.blue,
+            SizedBox(width: 15),
+            Text(
+              texto,
+              style: TextStyle(
+                fontSize: 16, // ← Un poco más pequeño para caber mejor
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
