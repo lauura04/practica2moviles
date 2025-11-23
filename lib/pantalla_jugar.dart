@@ -1,51 +1,63 @@
+// lib/screens/pantalla_jugar.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/game_provider.dart';
 
-class PantallaJugar extends StatelessWidget{
+// Importamos los widgets que acabamos de crear
+import 'screens/seleccion_widget.dart';
+import 'screens/combate_widget.dart';
+import 'screens/fin_juego_widget.dart';
+import 'screens/game_won_widget.dart';
+import 'screens/switch_pokemon_widget.dart';
+
+class PantallaJugar extends StatelessWidget {
+  const PantallaJugar({super.key});
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
+    // 1. Nos conectamos a GameProvider para escuchar sus cambios
+    final gameProvider = Provider.of<GameProvider>(context);
+
+    // 2. Creamos un widget vacío que llenaremos según el estado
+    Widget currentScreen;
+
+    // 3. Usamos un switch para decidir qué widget mostrar
+    switch (gameProvider.gameScreen) {
+      case GameScreen.pokemonSelection:
+        currentScreen = const SelectionWidget();
+        break;
+      case GameScreen.combat:
+      case GameScreen.selectingHealTarget:
+      case GameScreen.selectingSwitchTarget:
+        currentScreen = const CombatWidget();
+        break;
+      case GameScreen.mustSwitchPokemon: // NEW CASE
+        currentScreen = const SwitchPokemonWidget();
+        break;
+      case GameScreen.gameOver:
+        currentScreen = const GameOverWidget();
+        break;
+      case GameScreen.gameWon: // NEW: Handle the final victory
+        currentScreen = const GameWonWidget();
+        break;
+
+    }
+
+    // 4. Devolvemos la pantalla dentro de un Scaffold y con una animación
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pantalla de Juego'),
-        backgroundColor: Colors.green,
-        leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pop(context);
+        title: const Text("Mini RPG de Combate"),
+        backgroundColor: Colors.black54,
+      ),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          // Una bonita transición de fundido (fade)
+          return FadeTransition(opacity: animation, child: child);
         },
+        // Aquí se coloca el widget que decidimos mostrar
+        child: currentScreen,
       ),
-      ),
-      body: Container(
-        color: Colors.green[50],
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:[
-              Icon(
-                Icons.sports_esports,
-                size: 100,
-                color: Colors.green,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Preparate para jugar',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green[800],
-                ),
-              ),
-              SizedBox(height: 20),
-              Text (
-                'Contenido del juego',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[700]
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      );
+    );
   }
 }
