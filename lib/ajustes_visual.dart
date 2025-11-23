@@ -108,6 +108,7 @@ class _AjustesVisualesState extends State<AjustesVisuales> {
                       Text(
                         'Guardar Cambios',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
                       ),
                     ],
                   ),
@@ -153,6 +154,7 @@ class _ItemConfiguracionVisual extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ],
