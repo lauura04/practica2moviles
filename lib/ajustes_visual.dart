@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:practica2moviles/providers/settings_provider.dart';
 
-class AjustesVisuales extends StatefulWidget {
-  @override
-  _AjustesVisualesState createState() => _AjustesVisualesState();
-}
-
-class _AjustesVisualesState extends State<AjustesVisuales> {
-  bool _modoOscuro = false;
-  bool _efectosAnimaciones = true;
-  double _tamanioTexto = 16.0;
-
+class AjustesVisuales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -56,64 +50,22 @@ class _AjustesVisualesState extends State<AjustesVisuales> {
                 _ItemConfiguracionVisual(
                   icono: Icons.dark_mode,
                   titulo: 'Modo Oscuro',
-                  valor: _modoOscuro,
+                  valor: settings.modoOscuro,
                   onChanged: (valor) {
-                    setState(() {
-                      _modoOscuro = valor;
-                    });
+                    settings.setModoOscuro(valor);
                   },
                 ),
                 SizedBox(height: 20),
                 _ItemConfiguracionVisual(
                   icono: Icons.animation,
                   titulo: 'Efectos y Animaciones',
-                  valor: _efectosAnimaciones,
+                  valor: settings.efectosAnimaciones,
                   onChanged: (valor) {
-                    setState(() {
-                      _efectosAnimaciones = valor;
-                    });
+                    settings.setEfectoAnimaciones(valor);
                   },
                 ),
                 SizedBox(height: 210),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    elevation: 8,
-                  ),
-                  onPressed: () {
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('¡Cambios guardados correctamente!'),
-                        backgroundColor: Colors.green,
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-
-                      Image.asset(
-                        'assets/ajustesIcon.png',
-                        width: 48,
-                        height: 48,
-                      ),
-                      SizedBox(width: 12),
-                      Text(
-                        'Guardar Cambios',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-
-                      ),
-                    ],
-                  ),
-
-                ),
               ],
             ),
           ),

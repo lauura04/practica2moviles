@@ -1,14 +1,20 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:practica2moviles/menu_principal.dart';
-import 'package:provider/provider.dart'; // Importa provider
-import 'providers/game_provider.dart';   // Importa tu GameProvider
+import 'package:provider/provider.dart';
+import 'package:practica2moviles/providers/settings_provider.dart';
+import 'providers/game_provider.dart';
 
 void main() {
-  // Aquí envolvemos toda la app con el ChangeNotifierProvider
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => GameProvider(),
+    // 👇 Usa MultiProvider para registrar todos tus providers
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GameProvider()),
+        ChangeNotifierProvider(create: (context) => SettingsProvider()),
+        // Aquí podrías añadir más providers en el futuro
+        // ChangeNotifierProvider(create: (context) => AuthProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -19,11 +25,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Juego de Combate',
-      //debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(), // Un tema oscuro queda bien para juegos
-      home: MenuPrincipal(),
+    // Escucha solo a SettingsProvider para los cambios de tema
+    return Consumer<SettingsProvider>(
+      builder: (context, settings, child) {
+        return MaterialApp(
+          title: 'Juego de Combate',
+          debugShowCheckedModeBanner: false,
+          // El tema ahora es controlado por el provider de ajustes
+          theme: settings.currentTheme,
+          home: MenuPrincipal(),
+        );
+      },
     );
   }
 }

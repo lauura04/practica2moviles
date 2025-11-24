@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:practica2moviles/providers/settings_provider.dart';
 
-class AjustesSonido extends StatefulWidget {
-  @override
-  _AjustesSonidoState createState() => _AjustesSonidoState();
-}
 
-class _AjustesSonidoState extends State<AjustesSonido> {
-  // --- Variables de estado para cada control ---
-  bool _sonidoActivado = true;
-  bool _musicaActivada = true;
-  double _volumenGeneral = 0.7;
-  double _volumenEfectos = 0.8;
-
+class AjustesSonido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -73,22 +66,18 @@ class _AjustesSonidoState extends State<AjustesSonido> {
                           _ItemConfiguracionSonido(
                             icono: Icons.volume_up,
                             titulo: 'Sonido',
-                            valor: _sonidoActivado,
+                            valor: settings.sonidoActivado,
                             onChanged: (valor) {
-                              setState(() {
-                                _sonidoActivado = valor;
-                              });
+                              settings.setSonidoActivado(valor);
                             },
                           ),
                           Divider(height: 1, indent: 16, endIndent: 16), // Separador visual
                           _ItemConfiguracionSonido(
                             icono: Icons.music_note,
                             titulo: 'Música de fondo',
-                            valor: _musicaActivada,
+                            valor: settings.musicActivada,
                             onChanged: (valor) {
-                              setState(() {
-                                _musicaActivada = valor;
-                              });
+                              settings.setMusicaActivada(valor);
                             },
                           ),
                         ],
@@ -101,11 +90,9 @@ class _AjustesSonidoState extends State<AjustesSonido> {
                     _ItemConfiguracionSlider(
                       icono: Icons.graphic_eq,
                       titulo: 'Volumen General',
-                      valor: _volumenGeneral,
+                      valor: settings.volumenGeneral,
                       onChanged: (nuevoValor) {
-                        setState(() {
-                          _volumenGeneral = nuevoValor;
-                        });
+                        settings.setVolumenGeneral(nuevoValor);
                       },
                     ),
 
@@ -115,55 +102,13 @@ class _AjustesSonidoState extends State<AjustesSonido> {
                     _ItemConfiguracionSlider(
                       icono: Icons.surround_sound,
                       titulo: 'Efectos de Sonido',
-                      valor: _volumenEfectos,
+                      valor: settings.volumenEfectos,
                       onChanged: (nuevoValor) {
-                        setState(() {
-                          _volumenEfectos = nuevoValor;
-                        });
+                        settings.setVolumenEfectos(nuevoValor);
                       },
                     ),
 
                     SizedBox(height: 40), // Espacio antes del botón de guardar
-
-                    // --- BOTÓN PARA GUARDAR CAMBIOS ---
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        elevation: 8,
-                      ),
-                      onPressed: () {
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('¡Cambios guardados correctamente!'),
-                            backgroundColor: Colors.green,
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                        Image.asset(
-                        'assets/ajustesIcon.png',
-                        width: 48,
-                        height: 48,
-                        ),
-                      SizedBox(width: 12),
-                      Text(
-                        'Guardar Cambios',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      ],
-                      ),
-
-                    ),
                   ],
                 ),
               ),
