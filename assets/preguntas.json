@@ -1,0 +1,550 @@
+[
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "facil",
+    "pregunta" : "¿Qué objeto te permite salir de las cuevas?",
+    "opciones": [
+      "Cuerda huida",
+      "Cinturón negro",
+      "Cola plúmbea",
+      "Piedra dura"
+    ],
+    "respuestaCorrecta": "Cuerda huida",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "facil",
+    "pregunta":"¿Cuántos pokémon puedes llevar en el equipo?",
+    "opciones": [
+      "3",
+      "5",
+      "6",
+      "Todos los que quieras"
+      ],
+    "respuestaCorrecta": "6",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "facil",
+    "pregunta": "¿Qué es mejor, la superball o la ultraball?",
+    "opciones": [
+      "La superball",
+      "La ultraball",
+      "Ambas",
+      "Ninguna de las anteriores"
+    ],
+    "respuestaCorrecta": "La ultraball",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Dónde aparece Caterpie por primera vez?",
+    "opciones": [
+      "Gen 1",
+      "Gen 2",
+      "Gen 6",
+      "Gen 4"
+      ],
+    "respuestaCorrecta": "Gen 1",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Cuáles son los iniciales de Sinnoh?",
+    "opciones": [
+      "Chimchar, Squirtle, Bulbasaur",
+      "Piplup, Cyndaquil, Chespin",
+      "Chimchar, Piplup y Turtwig",
+      "Turtwig, Torchic, Oshawott"
+    ],
+    "respuestaCorrecta": "Chimchar, Piplup y Turtwig",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Cuáles son los iniciales de Kanto?",
+    "opciones": [
+      "Bulbasaur, Totodile, Torchic",
+      "Charmander, Oshawott, Chespin",
+      "Bulbasaur, Charmander, Squirtle",
+      "Tepig, Piplup, Rowlet"
+    ],
+    "respuestaCorrecta": "Bulbasaur, Charmander, Squirtle",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál de estos iniciales no ha tenido Ash?",
+    "opciones": [
+      "Fennekin",
+      "Charmander",
+      "Cyndaquil",
+      "Chimchar"
+    ],
+    "respuestaCorrecta": "Fennekin",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál de estos pokemons no ha tenido Ash?",
+    "opciones": [
+      "Tauros",
+      "Leavanny",
+      "Sliggoo",
+      "Arcanine"
+    ],
+    "respuestaCorrecta": "Arcanine",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "facil",
+    "pregunta": "¿Cuál es el pokémon de Ash?",
+    "opciones": [
+      "Caterpie",
+      "Greninja",
+      "Pikachu",
+      "Charizard"
+    ],
+    "respuestaCorrecta": "Pikachu",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Quién es el Creador del PC en Kanto?",
+    "opciones": [
+      "El Profesor Oak",
+      "Bill",
+      "Lanette",
+      "Cassius"
+    ],
+    "respuestaCorrecta": "Bill",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Qué tipos es Charizard?",
+    "opciones": [
+      "Dragón y fuego",
+      "Volador y fuego",
+      "Solo dragón",
+      "Solo fuego"
+    ],
+    "respuestaCorrecta": "Volador y fuego",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Quién fue el primer rival de Ash?",
+    "opciones": [
+      "Gary Oak",
+      "Paul",
+      "Misty",
+      "Brock"
+    ],
+    "respuestaCorrecta": "Garu Oak",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Clefable",
+      "Gengar",
+      "Chansey",
+      "Haunter"
+    ],
+    "respuestaCorrecta": "Clefable",
+    "fuenteDato": "clefable.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Elekid",
+      "Togetic",
+      "Magby",
+      "Happiny"
+      ],
+    "respuestaCorrecta": "Magby",
+    "fuenteDato": "magby.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Gastly",
+      "Castform",
+      "Exeggcute",
+      "Voltorb"
+    ],
+    "respuestaCorrecta": "Castform",
+    "fuenteDato": "castform.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "facil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Pikachu",
+      "Mug",
+      "Ditto",
+      "Trubbish"
+      ],
+    "respuestaCorrecta": "Ditto",
+    "fuenteDato": "ditto.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Emolga",
+      "Pachirisu",
+      "Morpeko",
+      "Dedenne"
+    ],
+    "respuestaCorrecta": "Emolga",
+    "fuenteDato": "emolga.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "media",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Machop",
+      "Riolu",
+      "Dialga",
+      "Aipom"
+    ],
+    "respuestaCorrecta": "Riolu",
+    "fuenteDato": "riolu.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Flabébé",
+      "Floette",
+      "Florges",
+      "Comfey"
+    ],
+    "respuestaCorrecta": "Floette",
+    "fuenteDato": "floette.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "facil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Gumshoos",
+      "Donald Trump",
+      "Raticate",
+      "Palkia"
+    ],
+    "respuestaCorrecta": "Gumshoos",
+    "fuenteDato": "gumshoos.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Zamazenta",
+      "Zacian",
+      "Stoutland",
+      "Lycanroc"
+    ],
+    "respuestaCorrecta": "Zacian",
+    "fuenteDato": "zacian.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Dolliv",
+      "Applin",
+      "Cherubi",
+      "Smoliv"
+    ],
+    "respuestaCorrecta": "Smoliv",
+    "fuenteDato": "smoliv.png"
+  },
+  {
+    "tipo": "imagen_4_opciones",
+    "dificultad": "dificil",
+    "pregunta": "¿Cuál es este Pokemon?",
+    "opciones": [
+      "Graveler",
+      "Regirock",
+      "Coalossal",
+      "Garganacl"
+    ],
+    "respuestaCorrecta": "Garganacl",
+    "fuenteDato": "garganacl.png"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "facil",
+    "pregunta": "¿A qué pertenece esta canción?",
+    "opciones": [
+      "Centro Pokemon",
+      "Tienda",
+      "Centro comercial",
+      "Gimnasio"
+      ],
+    "respuestaCorrecta": "Centro Pokemon",
+    "fuenteDato": "centro.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "media",
+    "pregunta": "¿De qué equipo enemigo es este tema?",
+    "opciones": [
+      "Team Rocket",
+      "Team Plasma",
+      "Team Flare",
+      "Team Galaxy"
+      ],
+    "respuestaCorrecta": "Team Plasma",
+    "fuenteDato": "plasma.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "facil",
+    "pregunta": "¿A qué región pertenece esta canción?",
+    "opciones": [
+      "Kanto",
+      "Teselia",
+      "Johto",
+      "Sinnoh"
+    ],
+    "respuestaCorrecta": "Kanto",
+    "fuenteDato": "ruta1.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "dificil",
+    "pregunta": "¿A qué pertenece esta canción?",
+    "opciones": [
+      "Monte Corona",
+      "Lago Veraz",
+      "Pueblo Hojaverde",
+      "Pueblo Lavanda"
+    ],
+    "respuestaCorrecta": "Lago Veraz",
+    "fuenteDato": "veraz.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "facil",
+    "pregunta": "¿A qué pertenece esta canción?",
+    "opciones": [
+      "Intercambio",
+      "Combate",
+      "Evolución",
+      "Guardado"
+    ],
+    "respuestaCorrecta": "Evolución",
+    "fuenteDato": "evolution.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "media",
+    "pregunta": "¿A qué pertenece esta canción?",
+    "opciones": [
+      "Intercambio",
+      "Combate",
+      "Evolución",
+      "Guardado"
+    ],
+    "respuestaCorrecta": "Intercambio",
+    "fuenteDato": "intercambio.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "dificil",
+    "pregunta": "¿A qué juego pertenece esta canción?",
+    "opciones": [
+      "Escarlata y Púrpura",
+      "UltraSol y UltraLuna",
+      "Leyendas Arceus",
+      "Espada y Escudo"
+    ],
+    "respuestaCorrecta": "Escarlata y Púrpura",
+    "fuenteDato": "escarlata.mp3"
+  },
+  {
+    "tipo": "musica",
+    "dificultad": "media",
+    "pregunta": "¿A quién pertenece este tema?",
+    "opciones": [
+      "Cynthia",
+      "Lance",
+      "Dianta",
+      "Lionel"
+    ],
+    "respuestaCorrecta": "Cynthia",
+    "fuenteDato": "cynthia.mp3"
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "facil",
+    "pregunta": "¿Qué tipo es efectivo contra el tipo fuego?",
+    "opciones": [
+      "Agua",
+      "Hada",
+      "Planta",
+      "Eléctrico"
+    ],
+    "respuestaCorrecta": "Agua",
+    "fuenteDato": null
+
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "media",
+    "pregunta": "¿Qué tipo es poco efectivo contra el tipo planta?",
+    "opciones": [
+      "Eléctrico",
+      "Fuego",
+      "Dragón",
+      "Roca"
+    ],
+    "respuestaCorrecta": "Eléctrico",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "media",
+    "pregunta": "¿Qué tipo no es efectivo contra el tipo dragón?",
+    "opciones": [
+      "Dragón",
+      "Hielo",
+      "Hada",
+      "Agua"
+    ],
+    "respuestaCorrecta": "Agua",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "facil",
+    "pregunta": "¿Qué tipo no afecta al tipo fantasma?",
+    "opciones": [
+      "Normal",
+      "Siniestro",
+      "Psíquico",
+      "Fuego"
+    ],
+    "respuestaCorrecta": "Normal",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "facil",
+    "pregunta": "¿Qué tipo es efectivo contra el tipo agua?",
+    "opciones": [
+      "Fuego",
+      "Hielo",
+      "Roca",
+      "Eléctrico"
+      ],
+    "respuestaCorrecta": "Eléctrico",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "dificil",
+    "pregunta": "¿Qué tipo es efectivo contra el tipo hielo?",
+    "opciones": [
+      "Acero",
+      "Tierra",
+      "Volador",
+      "Planta"
+    ],
+    "respuestaCorrecta": "Acero",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "media",
+    "pregunta": "¿Qué tipo es poco efectivo contra el tipo volador?",
+    "opciones": [
+      "Agua",
+      "Lucha",
+      "Eléctrico",
+      "Fuego"
+    ],
+    "respuestaCorrecta": "Lucha",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "facil",
+    "pregunta": "¿Qué tipo es efectivo contra el tipo bicho?",
+    "opciones": [
+      "Roca",
+      "Hada",
+      "Siniestro",
+      "Planta"
+    ],
+    "respuestaCorrecta": "Roca",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "media",
+    "pregunta": "¿Qué tipo no afecta al tipo siniestro?",
+    "opciones": [
+      "Eléctrico",
+      "Fantasma",
+      "Psíquico",
+      "Acero"
+    ],
+    "respuestaCorrecta": "Psíquico",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "facil",
+    "pregunta": "¿Qué tipo no afecta al tipo tierra?",
+    "opciones": [
+      "Acero",
+      "Eléctrico",
+      "Psíquico",
+      "Roca"
+    ],
+    "respuestaCorrecta": "Eléctrico",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "tablatipos",
+    "dificultad": "dificil",
+    "pregunta": "¿Qué tipo es poco eficaz contra el tipo hada?",
+    "opciones": [
+      "Bicho",
+      "Hielo",
+      "Roca",
+      "Fantasma"
+    ],
+    "respuestaCorrecta": "Bicho",
+    "fuenteDato": null
+  }
+
+]
