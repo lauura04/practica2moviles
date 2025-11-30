@@ -29,18 +29,18 @@ class PantallaJugar extends StatelessWidget {
       case GameScreen.combat:
       case GameScreen.selectingHealTarget:
       case GameScreen.selectingSwitchTarget:
+      case GameScreen.answeringQuestion: // Se añade el nuevo estado aquí para mostrar CombatWidget
         currentScreen = const CombatWidget();
         break;
-      case GameScreen.mustSwitchPokemon: // NEW CASE
+      case GameScreen.mustSwitchPokemon:
         currentScreen = const SwitchPokemonWidget();
         break;
       case GameScreen.gameOver:
         currentScreen = const GameOverWidget();
         break;
-      case GameScreen.gameWon: // NEW: Handle the final victory
+      case GameScreen.gameWon:
         currentScreen = const GameWonWidget();
         break;
-
     }
 
     // 4. Devolvemos la pantalla dentro de un Scaffold y con una animación

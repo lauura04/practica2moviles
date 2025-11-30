@@ -5,6 +5,7 @@ import '../../providers/game_provider.dart';
 import 'team_member_card.dart';
 import 'heal_selection_widget.dart';
 import 'switch_selection_widget.dart';
+import 'question_widget.dart';
 
 class CombatWidget extends StatelessWidget {
   const CombatWidget({super.key});
@@ -167,6 +168,8 @@ class CombatWidget extends StatelessWidget {
               const HealSelectionWidget(),
             if (gameProvider.gameScreen == GameScreen.selectingSwitchTarget)
               const SwitchSelectionWidget(),
+            if (gameProvider.gameScreen == GameScreen.answeringQuestion)
+              const QuestionWidget(),
           ],
         );
       },

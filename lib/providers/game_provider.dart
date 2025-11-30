@@ -1,7 +1,10 @@
 // lib/providers/game_provider.dart
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/pokemon.dart';
+import '../models/pregunta.dart';
 import 'dart:math';
 
 // Enum con todos los posibles estados de la pantalla del juego
@@ -13,6 +16,7 @@ enum GameScreen {
   mustSwitchPokemon,     // Estado para cuando el jugador está forzado a cambiar
   gameOver,
   gameWon,
+  answeringQuestion, // Estado para cuando el jugador responde una pregunta
 }
 
 class GameProvider with ChangeNotifier {
@@ -24,13 +28,20 @@ class GameProvider with ChangeNotifier {
   int _currentEnemyIndex = 0;
   bool _isTurnProcessing = false;
 
+  // --- PREGUNTAS ---
+  List<Pregunta> _preguntas = [];
+  Pregunta? _currentQuestion;
+  String? _pendingAction; // Acción que se ejecutará si se responde correctamente
+  Pokemon? _healTarget;
+  Pokemon? _switchTarget;
+
   // --- GESTIÓN DE POKÉMON DEL JUGADOR ---
   List<Pokemon> _ownedPokemon = [];
   List<Pokemon> get playerTeam => _ownedPokemon;
 
   // --- DATOS DEL JUEGO (Listas inmutables) ---
   final List<Pokemon> _starterPokemonOptions = [
-    Pokemon(name: "Charizard", maxHealth: 100, attackPower: 22, level: 5, imageAsset: "assets/charizard.png", isAlly: true),
+    Pokemon(name: "Charizard", maxHealth: 100, attackPower: 22, level: 5, imageAsset: "assets/charmander.png", isAlly: true),
     Pokemon(name: "Blastoise", maxHealth: 120, attackPower: 18, level: 5, imageAsset: "assets/blastoise.png", isAlly: true),
     Pokemon(name: "Venusaur", maxHealth: 110, attackPower: 20, level: 5, imageAsset: "assets/venusaur.png", isAlly: true),
   ];
@@ -55,6 +66,8 @@ class GameProvider with ChangeNotifier {
   String get combatLog => _combatLog;
   List<Pokemon> get starterPokemonOptions => _starterPokemonOptions;
   bool get isTurnProcessing => _isTurnProcessing;
+  Pregunta? get currentQuestion => _currentQuestion;
+
   Pokemon? get nextEnemy {
     final nextIndex = _currentEnemyIndex + 1;
     // Check if the next index is valid (within the bounds of the enemy list)
@@ -63,6 +76,55 @@ class GameProvider with ChangeNotifier {
     }
     // If there is no next enemy (i.e., we are fighting the last one), return null.
     return null;
+  }
+
+  GameProvider() {
+    _loadQuestions();
+  }
+
+  Future<void> _loadQuestions() async {
+    try {
+      final String response = await rootBundle.loadString('assets/preguntas.json');
+      final List<dynamic> data = json.decode(response);
+      _preguntas = data.map((json) => Pregunta.fromJson(json)).toList();
+    } catch (e) {
+      print("Error loading questions: $e");
+      _combatLog = "Error loading questions. Actions will proceed without them.";
+    }
+  }
+
+  void _showRandomQuestion(String action) {
+    if (_preguntas.isEmpty) {
+      // Si no hay preguntas, ejecutar acción directamente
+      _executeAction(action);
+      return;
+    }
+    _currentQuestion = _preguntas[Random().nextInt(_preguntas.length)];
+    _pendingAction = action;
+    _gameScreen = GameScreen.answeringQuestion;
+    notifyListeners();
+  }
+
+  void checkAnswer(String selectedOption) {
+    if (_currentQuestion == null) return;
+
+    bool isCorrect = selectedOption == _currentQuestion!.respuestaCorrecta;
+    
+    if (isCorrect) {
+      _combatLog = "Correct! Action successful.";
+      if (_pendingAction != null) {
+        _executeAction(_pendingAction!);
+      }
+    } else {
+      _combatLog = "Wrong answer! Turn skipped.";
+      _gameScreen = GameScreen.combat;
+      _triggerEnemyTurn();
+    }
+    _pendingAction = null;
+    _currentQuestion = null;
+    _healTarget = null;
+    _switchTarget = null;
+    notifyListeners();
   }
 
   // --- LÓGICA DE COMBATE Y ESTADO ---
@@ -128,11 +190,9 @@ class GameProvider with ChangeNotifier {
   }
 
   void performVoluntarySwitch(Pokemon newPokemon) {
-    _selectedPokemon = newPokemon;
-    _combatLog = "You switched to ${_selectedPokemon!.name}!";
-    _gameScreen = GameScreen.combat;
-    notifyListeners();
-    _triggerEnemyTurn(); // Cambiar consume el turno
+    // Interceptar el cambio para hacer pregunta
+    _switchTarget = newPokemon;
+    _showRandomQuestion('complete_switch');
   }
 
   void cancelSwitchSelection() {
@@ -142,12 +202,30 @@ class GameProvider with ChangeNotifier {
   }
 
   void healPokemon(Pokemon target) {
+    // Interceptar curación para hacer pregunta
+    _healTarget = target;
+    _showRandomQuestion('complete_heal');
+  }
+
+  void _completeHeal() {
+    if (_healTarget == null) return;
     final healAmount = Random().nextInt(26) + 25; // 25-50
-    target.heal(healAmount);
-    _combatLog = "${target.name} was healed for $healAmount HP!";
+    _healTarget!.heal(healAmount);
+    _combatLog = "${_healTarget!.name} was healed for $healAmount HP!";
     _gameScreen = GameScreen.combat;
+    _healTarget = null;
     notifyListeners();
     _triggerEnemyTurn(); // Curar consume el turno
+  }
+
+  void _completeSwitch() {
+    if (_switchTarget == null) return;
+    _selectedPokemon = _switchTarget;
+    _combatLog = "You switched to ${_selectedPokemon!.name}!";
+    _gameScreen = GameScreen.combat;
+    _switchTarget = null;
+    notifyListeners();
+    _triggerEnemyTurn(); // Cambiar consume el turno
   }
 
   void cancelHealSelection() {
@@ -183,26 +261,47 @@ class GameProvider with ChangeNotifier {
     if (_selectedPokemon == null || _currentEnemy == null) return;
     if (_selectedPokemon!.currentHealth <= 0) return;
 
+    // Acciones que requieren pregunta antes de ejecutarse
+    if (action == 'attack' || action == 'befriend') {
+       _showRandomQuestion(action);
+       return;
+    }
+
+    if (action == 'heal') {
+        _gameScreen = GameScreen.selectingHealTarget;
+        _combatLog = "Who would you like to heal?";
+        notifyListeners();
+        return;
+    }
+    
+    if (action == 'switch') {
+        _gameScreen = GameScreen.selectingSwitchTarget;
+        _combatLog = "Switch to which Pokémon?";
+        notifyListeners();
+        return;
+    }
+  }
+
+  void _executeAction(String action) {
     _isTurnProcessing = true;
+    _gameScreen = GameScreen.combat; // Volver a combate para mostrar log/animación
     notifyListeners();
+
+    if (action == 'complete_heal') {
+        _completeHeal();
+        return;
+    }
+
+    if (action == 'complete_switch') {
+        _completeSwitch();
+        return;
+    }
 
     switch (action) {
       case 'attack':
         _currentEnemy!.takeDamage(_selectedPokemon!.attackPower);
         _combatLog = "${_selectedPokemon!.name} attacks and deals ${_selectedPokemon!.attackPower} damage.";
         break;
-
-      case 'heal':
-        _gameScreen = GameScreen.selectingHealTarget;
-        _combatLog = "Who would you like to heal?";
-        notifyListeners();
-        return;
-
-      case 'switch':
-        _gameScreen = GameScreen.selectingSwitchTarget;
-        _combatLog = "Switch to which Pokémon?";
-        notifyListeners();
-        return;
 
       case 'befriend':
         if (playerTeam.length >= 6) {
