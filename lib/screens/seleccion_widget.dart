@@ -54,7 +54,7 @@ class SelectionWidget extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.2), // Slight halo effect
+                          color: Colors.white.withOpacity(0.2), 
                           boxShadow: [
                              BoxShadow(
                               color: Colors.black.withOpacity(0.3),
@@ -65,12 +65,12 @@ class SelectionWidget extends StatelessWidget {
                         ),
                         child: Image.asset(
                           pokemon.imageAsset,
-                          height: 120,
-                          width: 120,
+                          height: 100,
+                          width: 100,
                           fit: BoxFit.contain,
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       // Selection Button
                       ElevatedButton(
                         onPressed: () {
@@ -79,13 +79,11 @@ class SelectionWidget extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white.withOpacity(0.9),
                           foregroundColor: Colors.black87,
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                          child: Text(
-                            pokemon.name,
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
+                        child: Text(
+                          pokemon.name,
+                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

@@ -30,7 +30,7 @@ class CombatWidget extends StatelessWidget {
               children: [
                 // --- COLUMNA IZQUIERDA: EQUIPO DEL JUGADOR ---
                 Container(
-                  width: 130, // UPDATED: Made it thinner (from 180 to 130)
+                  width: 100, // UPDATED: Made it even thinner (from 130 to 100)
                   padding: const EdgeInsets.all(8.0),
                   color: Colors.black.withOpacity(0.2),
                   child: Column(
@@ -38,7 +38,7 @@ class CombatWidget extends StatelessWidget {
                     children: [
                       const Text(
                         "Tu Equipo",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white70),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white70),
                       ),
                       const Divider(color: Colors.white54),
                       const SizedBox(height: 10),
@@ -144,33 +144,36 @@ class CombatWidget extends StatelessWidget {
                         ),
 
                         // Botones de acción
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: isProcessing ? null : () => gameProvider.performCombatAction('attack'),
-                                  child: const Text("Atacar"),
-                                ),
-                                ElevatedButton(
-                                  onPressed: isProcessing ? null : () => gameProvider.performCombatAction('heal'),
-                                  child: const Text("Curarse"),
-                                ),
-                                ElevatedButton(
-                                  onPressed: (isProcessing || !canSwitch) ? null : () => gameProvider.performCombatAction('switch'),
-                                  child: const Text("Cambiar"),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: ElevatedButton(
-                                onPressed: (isProcessing || isTeamFull) ? null : () => gameProvider.performCombatAction('befriend'),
-                                child: const Text("Ser amigo"),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30.0), // UPDATED: Added bottom padding to move buttons up
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: isProcessing ? null : () => gameProvider.performCombatAction('attack'),
+                                    child: const Text("Atacar"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: isProcessing ? null : () => gameProvider.performCombatAction('heal'),
+                                    child: const Text("Curarse"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: (isProcessing || !canSwitch) ? null : () => gameProvider.performCombatAction('switch'),
+                                    child: const Text("Cambiar"),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: ElevatedButton(
+                                  onPressed: (isProcessing || isTeamFull) ? null : () => gameProvider.performCombatAction('befriend'),
+                                  child: const Text("Ser amigo"),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
