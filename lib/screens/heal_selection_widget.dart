@@ -14,7 +14,7 @@ class HealSelectionWidget extends StatelessWidget {
     final playerTeam = gameProvider.playerTeam;
 
     return Container(
-      // Semi-transparent background to show it's an overlay
+      //Fondo semitransparente
       color: Colors.black.withOpacity(0.7),
       child: Center(
         child: Container(
@@ -33,19 +33,19 @@ class HealSelectionWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 15),
-              // List of team members
+              //Lista del equipo
               ...playerTeam.map((pokemon) {
-                // A Pokemon can only be healed if it's not at max health
+                //Solo se puede curar si no esta max vida
                 final canBeHealed = pokemon.currentHealth < pokemon.maxHealth;
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero, // Let the card handle padding
+                      padding: EdgeInsets.zero,
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                     ),
-                    // Disable button if Pokemon has full health
+                    //Desactiva el boton si el Pokemon esta full vida
                     onPressed: canBeHealed
                         ? () => gameProvider.healPokemon(pokemon)
                         : null,

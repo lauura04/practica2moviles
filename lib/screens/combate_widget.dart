@@ -89,7 +89,7 @@ class CombatWidget extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              // Pokémon Enemigo (FRONT)
+                              //Pokémon Enemigo (FRONT)
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -105,7 +105,6 @@ class CombatWidget extends StatelessWidget {
                                     height: 150,
                                     fit: BoxFit.contain,
                                   ),
-                                  // Next enemy preview
                                   if (nextEnemy != null) ...[
                                     const SizedBox(height: 10),
                                     Opacity(
@@ -133,7 +132,7 @@ class CombatWidget extends StatelessWidget {
                         // Log de combate
                         Container(
                           padding: const EdgeInsets.all(12),
-                          height: 80, // Fixed height for log
+                          height: 80,
                           child: SingleChildScrollView(
                             child: Text(
                               gameProvider.combatLog,
@@ -145,7 +144,7 @@ class CombatWidget extends StatelessWidget {
 
                         // Botones de acción
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 30.0), // UPDATED: Added bottom padding to move buttons up
+                          padding: const EdgeInsets.only(bottom: 30.0), // Se anadio un espacio inferior para que los botones no se superpongan
                           child: Column(
                             children: [
                               Row(
