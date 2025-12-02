@@ -64,11 +64,17 @@ class QuestionWidget extends StatelessWidget {
                     ),
                   ),
                 if (question.tipo == 'musica')
-                   const Padding(
+                  const Padding(
                     padding: EdgeInsets.only(bottom: 16.0),
-                    child: Text(
-                      "[Reproducción de música no disponible]",
-                      style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
+                    child: Column(
+                      children: [
+                        Icon(Icons.music_note, color: Colors.blueAccent, size: 48),
+                        SizedBox(height: 8),
+                        Text(
+                          "Escucha y adivina...",
+                          style: TextStyle(color: Colors.blueAccent, fontStyle: FontStyle.italic, fontSize: 16),
+                        ),
+                      ],
                     ),
                   ),
                 const SizedBox(height: 8),

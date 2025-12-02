@@ -309,7 +309,7 @@
       "Gimnasio"
       ],
     "respuestaCorrecta": "Centro Pokemon",
-    "fuenteDato": "centro.mp3"
+    "fuenteDato": "Music/centro.mp3"
   },
   {
     "tipo": "musica",
@@ -322,7 +322,7 @@
       "Team Galaxy"
       ],
     "respuestaCorrecta": "Team Plasma",
-    "fuenteDato": "plasma.mp3"
+    "fuenteDato": "Music/plasma.mp3"
   },
   {
     "tipo": "musica",
@@ -335,7 +335,7 @@
       "Sinnoh"
     ],
     "respuestaCorrecta": "Kanto",
-    "fuenteDato": "ruta1.mp3"
+    "fuenteDato": "Music/ruta1.mp3"
   },
   {
     "tipo": "musica",
@@ -348,7 +348,7 @@
       "Pueblo Lavanda"
     ],
     "respuestaCorrecta": "Lago Veraz",
-    "fuenteDato": "veraz.mp3"
+    "fuenteDato": "Music/veraz.mp3"
   },
   {
     "tipo": "musica",
@@ -361,7 +361,7 @@
       "Guardado"
     ],
     "respuestaCorrecta": "Evolución",
-    "fuenteDato": "evolution.mp3"
+    "fuenteDato": "Music/evolution.mp3"
   },
   {
     "tipo": "musica",
@@ -374,7 +374,7 @@
       "Guardado"
     ],
     "respuestaCorrecta": "Intercambio",
-    "fuenteDato": "intercambio.mp3"
+    "fuenteDato": "Music/intercambio.mp3"
   },
   {
     "tipo": "musica",
@@ -387,7 +387,7 @@
       "Espada y Escudo"
     ],
     "respuestaCorrecta": "Escarlata y Púrpura",
-    "fuenteDato": "escarlata.mp3"
+    "fuenteDato": "Music/escarlata.mp3"
   },
   {
     "tipo": "musica",
@@ -400,7 +400,7 @@
       "Lionel"
     ],
     "respuestaCorrecta": "Cynthia",
-    "fuenteDato": "cynthia.mp3"
+    "fuenteDato": "Music/cynthia.mp3"
   },
   {
     "tipo": "tablatipos",
