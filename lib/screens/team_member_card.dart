@@ -5,7 +5,9 @@ import '../../models/pokemon.dart';
 
 class TeamMemberCard extends StatelessWidget {
   final Pokemon pokemon;
-  final bool isSelected;  const TeamMemberCard({
+  final bool isSelected;
+
+  const TeamMemberCard({
     Key? key,
     required this.pokemon,
     this.isSelected = false,
@@ -22,19 +24,11 @@ class TeamMemberCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            // --- Placeholder for the Pokémon Image ---
-            // This is where you'll put your Image.asset widget later
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.white24),
-              ),
-              child: const Icon(Icons.image_not_supported, color: Colors.white54, size: 20),
-            ),
-            const SizedBox(width: 10),
+            // --- UPDATED: Removed the placeholder Image/Container ---
+            // The image container has been removed as requested
+            
+            // const SizedBox(width: 10), // Removed spacing since image is gone
+            
             // --- Pokémon Info ---
             Expanded(
               child: Column(

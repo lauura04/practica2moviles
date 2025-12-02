@@ -55,15 +55,6 @@ class AjustesVisuales extends StatelessWidget {
                     settings.setModoOscuro(valor);
                   },
                 ),
-                SizedBox(height: 20),
-                _ItemConfiguracionVisual(
-                  icono: Icons.animation,
-                  titulo: 'Efectos y Animaciones',
-                  valor: settings.efectosAnimaciones,
-                  onChanged: (valor) {
-                    settings.setEfectoAnimaciones(valor);
-                  },
-                ),
                 SizedBox(height: 210),
 
               ],

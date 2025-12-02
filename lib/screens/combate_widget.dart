@@ -30,7 +30,7 @@ class CombatWidget extends StatelessWidget {
               children: [
                 // --- COLUMNA IZQUIERDA: EQUIPO DEL JUGADOR ---
                 Container(
-                  width: 180,
+                  width: 130, // UPDATED: Made it thinner (from 180 to 130)
                   padding: const EdgeInsets.all(8.0),
                   color: Colors.black.withOpacity(0.2),
                   child: Column(
