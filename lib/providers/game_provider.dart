@@ -41,22 +41,22 @@ class GameProvider with ChangeNotifier {
 
   // --- DATOS DEL JUEGO (Listas inmutables) ---
   final List<Pokemon> _starterPokemonOptions = [
-    Pokemon(name: "Charizard", maxHealth: 100, attackPower: 22, level: 5, imageAsset: "assets/charmander.png", isAlly: true),
-    Pokemon(name: "Blastoise", maxHealth: 120, attackPower: 18, level: 5, imageAsset: "assets/blastoise.png", isAlly: true),
-    Pokemon(name: "Venusaur", maxHealth: 110, attackPower: 20, level: 5, imageAsset: "assets/venusaur.png", isAlly: true),
+    Pokemon(name: "Charizard", maxHealth: 100, attackPower: 22, level: 5, imageAsset: "sprites_pokes/charizardFront.png", backImageAsset: "sprites_pokes/charizardBack.png", isAlly: true),
+    Pokemon(name: "Blastoise", maxHealth: 120, attackPower: 18, level: 5, imageAsset: "sprites_pokes/blastoiseFront.png", backImageAsset: "sprites_pokes/blastoiseBack.png", isAlly: true),
+    Pokemon(name: "Venusaur", maxHealth: 110, attackPower: 20, level: 5, imageAsset: "sprites_pokes/venusaurFront.png", backImageAsset: "sprites_pokes/venusaurBack.png", isAlly: true),
   ];
 
   final List<Pokemon> _possibleEnemies = [
-    Pokemon(name: "Gastly", maxHealth: 50, attackPower: 15, level: 3, imageAsset: "assets/gastly.png"),
-    Pokemon(name: "Abra", maxHealth: 45, attackPower: 20, level: 3, imageAsset: "assets/abra.png"),
-    Pokemon(name: "Haunter", maxHealth: 70, attackPower: 25, level: 4, imageAsset: "assets/haunter.png"),
-    Pokemon(name: "Kadabra", maxHealth: 65, attackPower: 30, level: 4, imageAsset: "assets/kadabra.png"),
-    Pokemon(name: "Gengar", maxHealth: 90, attackPower: 35, level: 5, imageAsset: "assets/gengar.png"),
-    Pokemon(name: "Alakazam", maxHealth: 80, attackPower: 40, level: 5, imageAsset: "assets/alakazam.png"),
-    Pokemon(name: "Gyarados", maxHealth: 130, attackPower: 30, level: 6, imageAsset: "assets/gyarados.png"),
-    Pokemon(name: "Snorlax", maxHealth: 160, attackPower: 25, level: 6, imageAsset: "assets/snorlax.png"),
-    Pokemon(name: "Mewtwo", maxHealth: 150, attackPower: 50, level: 8, imageAsset: "assets/mewtwo.png"),
-    Pokemon(name: "Dragonite", maxHealth: 140, attackPower: 45, level: 8, imageAsset: "assets/dragonite.png"),
+    Pokemon(name: "Gastly", maxHealth: 50, attackPower: 15, level: 3, imageAsset: "sprites_pokes/gastlyFront.png", backImageAsset: "sprites_pokes/gastlyBack.png"),
+    Pokemon(name: "Abra", maxHealth: 45, attackPower: 20, level: 3, imageAsset: "sprites_pokes/abraFront.png", backImageAsset: "sprites_pokes/abraBack.png"),
+    Pokemon(name: "Haunter", maxHealth: 70, attackPower: 25, level: 4, imageAsset: "sprites_pokes/haunterFront.png", backImageAsset: "sprites_pokes/haunterBack.png"),
+    Pokemon(name: "Kadabra", maxHealth: 65, attackPower: 30, level: 4, imageAsset: "sprites_pokes/kadabraFront.png", backImageAsset: "sprites_pokes/kadabraBack.png"),
+    Pokemon(name: "Gengar", maxHealth: 90, attackPower: 35, level: 5, imageAsset: "sprites_pokes/gengarFront.png", backImageAsset: "sprites_pokes/gengarBack.png"),
+    Pokemon(name: "Alakazam", maxHealth: 80, attackPower: 40, level: 5, imageAsset: "sprites_pokes/alakazamFront.png", backImageAsset: "sprites_pokes/alakazamBack.png"),
+    Pokemon(name: "Gyarados", maxHealth: 130, attackPower: 30, level: 6, imageAsset: "sprites_pokes/gyaradosFront.png", backImageAsset: "sprites_pokes/gyaradosBack.png"),
+    Pokemon(name: "Snorlax", maxHealth: 160, attackPower: 25, level: 6, imageAsset: "sprites_pokes/snorlaxFront.png", backImageAsset: "sprites_pokes/snorlaxBack.png"),
+    Pokemon(name: "Mewtwo", maxHealth: 150, attackPower: 50, level: 8, imageAsset: "sprites_pokes/mewtwoFront.png", backImageAsset: "sprites_pokes/mewtwoBack.png"),
+    Pokemon(name: "Dragonite", maxHealth: 140, attackPower: 45, level: 8, imageAsset: "sprites_pokes/dragoniteFront.png", backImageAsset: "sprites_pokes/dragoniteBack.png"),
   ];
 
   // --- GETTERS (para que la UI lea el estado) ---
@@ -88,8 +88,8 @@ class GameProvider with ChangeNotifier {
       final List<dynamic> data = json.decode(response);
       _preguntas = data.map((json) => Pregunta.fromJson(json)).toList();
     } catch (e) {
-      print("Error loading questions: $e");
-      _combatLog = "Error loading questions. Actions will proceed without them.";
+      print("Error cargando las preguntas: $e");
+      _combatLog = "Error cargando las preguntas. La partida continuara sin estas.";
     }
   }
 
@@ -111,12 +111,12 @@ class GameProvider with ChangeNotifier {
     bool isCorrect = selectedOption == _currentQuestion!.respuestaCorrecta;
     
     if (isCorrect) {
-      _combatLog = "Correct! Action successful.";
+      _combatLog = "¡Correcto!.";
       if (_pendingAction != null) {
         _executeAction(_pendingAction!);
       }
     } else {
-      _combatLog = "Wrong answer! Turn skipped.";
+      _combatLog = "Respuesta incorrecta, pierdes turno.";
       _gameScreen = GameScreen.combat;
       _triggerEnemyTurn();
     }
@@ -144,7 +144,7 @@ class GameProvider with ChangeNotifier {
     } else {
       _currentEnemy = _possibleEnemies[_currentEnemyIndex];
       _gameScreen = GameScreen.combat;
-      _combatLog = "A wild ${_currentEnemy!.name} appeared!";
+      _combatLog = "Un ${_currentEnemy!.name} salvaje ha aparecido!";
     }
     notifyListeners();
   }
@@ -172,9 +172,9 @@ class GameProvider with ChangeNotifier {
     if (_currentEnemy != null && _currentEnemy!.isAlly) {
       if (playerTeam.length < 6) {
         _ownedPokemon.add(_currentEnemy!);
-        _combatLog = "${_currentEnemy!.name} joined your team!";
+        _combatLog = "¡${_currentEnemy!.name} se ha unido a tu equipo!";
       } else {
-        _combatLog = "${_currentEnemy!.name} was sent to the PC Box because your team is full.";
+        _combatLog = "${_currentEnemy!.name} fue enviado a la PC porque tu equipo está lleno.";
       }
     }
   }
@@ -183,7 +183,7 @@ class GameProvider with ChangeNotifier {
     if (newPokemon.currentHealth > 0 && newPokemon.isAlly) {
       _selectedPokemon = newPokemon;
       _gameScreen = GameScreen.combat;
-      _combatLog = "Go, ${_selectedPokemon!.name}!";
+      _combatLog = "¡Vamos ${_selectedPokemon!.name}!";
       _isTurnProcessing = false;
       notifyListeners();
     }
@@ -211,7 +211,7 @@ class GameProvider with ChangeNotifier {
     if (_healTarget == null) return;
     final healAmount = Random().nextInt(26) + 25; // 25-50
     _healTarget!.heal(healAmount);
-    _combatLog = "${_healTarget!.name} was healed for $healAmount HP!";
+    _combatLog = "¡${_healTarget!.name} se curó $healAmount HP!";
     _gameScreen = GameScreen.combat;
     _healTarget = null;
     notifyListeners();
@@ -221,7 +221,7 @@ class GameProvider with ChangeNotifier {
   void _completeSwitch() {
     if (_switchTarget == null) return;
     _selectedPokemon = _switchTarget;
-    _combatLog = "You switched to ${_selectedPokemon!.name}!";
+    _combatLog = "¡Cambiaste a ${_selectedPokemon!.name}!";
     _gameScreen = GameScreen.combat;
     _switchTarget = null;
     notifyListeners();
@@ -238,10 +238,10 @@ class GameProvider with ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (_selectedPokemon != null && _selectedPokemon!.currentHealth > 0) {
         _selectedPokemon!.takeDamage(_currentEnemy!.attackPower);
-        _combatLog += "\n${_currentEnemy!.name} strikes back...";
+        _combatLog += "\n${_currentEnemy!.name} ataca de vuelta...";
 
         if (_selectedPokemon!.currentHealth <= 0) {
-          _combatLog += "\n${_selectedPokemon!.name} fainted!";
+          _combatLog += "¡\n${_selectedPokemon!.name} se debilita!";
           bool canSwitch = playerTeam.any((p) => p.currentHealth > 0);
           if (canSwitch) {
             _gameScreen = GameScreen.mustSwitchPokemon;
@@ -269,14 +269,14 @@ class GameProvider with ChangeNotifier {
 
     if (action == 'heal') {
         _gameScreen = GameScreen.selectingHealTarget;
-        _combatLog = "Who would you like to heal?";
+        _combatLog = "¿A quién quieres curar?";
         notifyListeners();
         return;
     }
     
     if (action == 'switch') {
         _gameScreen = GameScreen.selectingSwitchTarget;
-        _combatLog = "Switch to which Pokémon?";
+        _combatLog = "¿A qué Pokémon cambias?";
         notifyListeners();
         return;
     }
@@ -300,21 +300,21 @@ class GameProvider with ChangeNotifier {
     switch (action) {
       case 'attack':
         _currentEnemy!.takeDamage(_selectedPokemon!.attackPower);
-        _combatLog = "${_selectedPokemon!.name} attacks and deals ${_selectedPokemon!.attackPower} damage.";
+        _combatLog = "${_selectedPokemon!.name} ataca y hace ${_selectedPokemon!.attackPower} de daño.";
         break;
 
       case 'befriend':
         if (playerTeam.length >= 6) {
-          _combatLog = "Your team is full! You cannot befriend more Pokémon.";
+          _combatLog = "Tu equipo está completo, no puedes reclutar más Pokemon";
           _isTurnProcessing = false;
           notifyListeners();
           return;
         }
         if (Random().nextDouble() > 0.5) {
           _currentEnemy!.isAlly = true;
-          _combatLog = "You convinced ${_currentEnemy!.name} to join your team!";
+          _combatLog = "¡Convenciste a ${_currentEnemy!.name} para unirse a tu equipo!";
         } else {
-          _combatLog = "You tried to befriend ${_currentEnemy!.name}, but it failed!";
+          _combatLog = "¡Intentaste ser amigo de ${_currentEnemy!.name}, pero has fallado!";
         }
         break;
     }
@@ -323,11 +323,11 @@ class GameProvider with ChangeNotifier {
     bool combatHasEnded = false;
     if (_currentEnemy!.currentHealth <= 0) {
       combatHasEnded = true;
-      _combatLog += "\n${_currentEnemy!.name} has been defeated!";
+      _combatLog += "¡\n${_currentEnemy!.name} ha sido derrotado!";
       for (var pokemon in playerTeam) {
         pokemon.levelUp();
       }
-      _combatLog += "\nYour team leveled up!";
+      _combatLog += "\n¡Tu equipo ha subido de nivel!";
       Future.delayed(const Duration(seconds: 2), () => endCombat(true));
     } else if (_currentEnemy!.isAlly) {
       combatHasEnded = true;

@@ -66,64 +66,80 @@ class CombatWidget extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // --- UPDATED: Seccion de información de combatientes ---
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            // Info del Jugador
-                            Text(
-                              "${activePokemon.name}\nLv: ${activePokemon.level}\nHealth: ${activePokemon.currentHealth}/${activePokemon.maxHealth}",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 16, height: 1.4),
-                            ),
-
-                            // Info de los Enemigos (Actual y Siguiente)
-                            Column(
-                              children: [
-                                // Info del Enemigo Actual
-                                Text(
-                                  "${currentEnemy.name}\nLv: ${currentEnemy.level}\nHealth: ${currentEnemy.currentHealth}/${currentEnemy.maxHealth}",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 16, height: 1.4, color: Colors.orangeAccent),
-                                ),
-                                const SizedBox(height: 20),
-
-                                // NEW: Widget para el Próximo Enemigo
-                                if (nextEnemy != null)
-                                  Opacity(
-                                    opacity: 0.7,
-                                    child: Column(
-                                      children: [
-                                        const Text("Next Up:", style: TextStyle(fontSize: 12, color: Colors.white70)),
-                                        const SizedBox(height: 4),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(0.4),
-                                            borderRadius: BorderRadius.circular(20),
-                                            border: Border.all(color: Colors.white30, width: 1),
-                                          ),
-                                          child: Text(
-                                            "${nextEnemy.name} (Lv: ${nextEnemy.level})",
-                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                        // --- IMÁGENES DE COMBATIENTES ---
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              // Pokémon del Jugador (BACK)
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Image.asset(
+                                    activePokemon.backImageAsset,
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.contain,
                                   ),
-                              ],
-                            ),
-                          ],
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "${activePokemon.name}\nLv: ${activePokemon.level}\nHealth: ${activePokemon.currentHealth}/${activePokemon.maxHealth}",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 16, height: 1.4),
+                                  ),
+                                ],
+                              ),
+                              // Pokémon Enemigo (FRONT)
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${currentEnemy.name}\nLv: ${currentEnemy.level}\nHealth: ${currentEnemy.currentHealth}/${currentEnemy.maxHealth}",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 16, height: 1.4, color: Colors.orangeAccent),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Image.asset(
+                                    currentEnemy.imageAsset,
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  // Next enemy preview
+                                  if (nextEnemy != null) ...[
+                                    const SizedBox(height: 10),
+                                    Opacity(
+                                      opacity: 0.7,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.4),
+                                          borderRadius: BorderRadius.circular(20),
+                                          border: Border.all(color: Colors.white30, width: 1),
+                                        ),
+                                        child: Text(
+                                          "Next: ${nextEnemy.name}",
+                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ]
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
 
                         // Log de combate
                         Container(
                           padding: const EdgeInsets.all(12),
-                          child: Text(
-                            gameProvider.combatLog,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18, fontStyle: FontStyle.italic, color: Colors.white70),
+                          height: 80, // Fixed height for log
+                          child: SingleChildScrollView(
+                            child: Text(
+                              gameProvider.combatLog,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Colors.white70),
+                            ),
                           ),
                         ),
 

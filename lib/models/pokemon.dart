@@ -6,7 +6,8 @@ class Pokemon {
   int currentHealth;
   int attackPower;
   int level;
-  String imageAsset;
+  String imageAsset; // Used as the default/front image
+  String backImageAsset; // NEW: Back sprite for allies
   bool isAlly;
 
   // --- NEW: Base stats to allow resetting ---
@@ -20,9 +21,13 @@ class Pokemon {
     required this.attackPower,
     required this.level,
     required this.imageAsset,
+    String? backImageAsset, // Optional in constructor
     this.isAlly = false,
-  })  : currentHealth = maxHealth,
-  // When a Pokemon is created, store its initial stats
+  })  : 
+        // If no specific back image is provided, we fallback to the front image 
+        // or you could use a placeholder if you prefer.
+        backImageAsset = backImageAsset ?? imageAsset,
+        currentHealth = maxHealth,
         _baseMaxHealth = maxHealth,
         _baseAttackPower = attackPower,
         _baseLevel = level;
