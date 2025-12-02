@@ -37,7 +37,7 @@ class CombatWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Your Team",
+                        "Tu Equipo",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white70),
                       ),
                       const Divider(color: Colors.white54),
@@ -94,7 +94,7 @@ class CombatWidget extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${currentEnemy.name}\nLv: ${currentEnemy.level}\nHealth: ${currentEnemy.currentHealth}/${currentEnemy.maxHealth}",
+                                    "${currentEnemy.name}\nLv: ${currentEnemy.level}\nHP: ${currentEnemy.currentHealth}/${currentEnemy.maxHealth}",
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 16, height: 1.4, color: Colors.orangeAccent),
                                   ),
@@ -118,7 +118,7 @@ class CombatWidget extends StatelessWidget {
                                           border: Border.all(color: Colors.white30, width: 1),
                                         ),
                                         child: Text(
-                                          "Next: ${nextEnemy.name}",
+                                          "Siguiente: ${nextEnemy.name}",
                                           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -151,15 +151,15 @@ class CombatWidget extends StatelessWidget {
                               children: [
                                 ElevatedButton(
                                   onPressed: isProcessing ? null : () => gameProvider.performCombatAction('attack'),
-                                  child: const Text("Attack"),
+                                  child: const Text("Atacar"),
                                 ),
                                 ElevatedButton(
                                   onPressed: isProcessing ? null : () => gameProvider.performCombatAction('heal'),
-                                  child: const Text("Heal"),
+                                  child: const Text("Curarse"),
                                 ),
                                 ElevatedButton(
                                   onPressed: (isProcessing || !canSwitch) ? null : () => gameProvider.performCombatAction('switch'),
-                                  child: const Text("Switch"),
+                                  child: const Text("Cambiar"),
                                 ),
                               ],
                             ),
@@ -167,7 +167,7 @@ class CombatWidget extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: ElevatedButton(
                                 onPressed: (isProcessing || isTeamFull) ? null : () => gameProvider.performCombatAction('befriend'),
-                                child: const Text("Befriend"),
+                                child: const Text("Ser amigo"),
                               ),
                             ),
                           ],

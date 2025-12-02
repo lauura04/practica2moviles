@@ -19,7 +19,7 @@ class SelectionWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Choose your starter Pokémon:", // UPDATED
+            "Elige tu Pokémon inicial:", // UPDATED
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
           ),
           const SizedBox(height: 30),

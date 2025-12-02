@@ -29,7 +29,7 @@ class SwitchSelectionWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Switch Pokémon",
+                "Cambiar Pokémon",
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 15),
@@ -63,7 +63,7 @@ class SwitchSelectionWidget extends StatelessWidget {
               // Cancel Button
               TextButton(
                 onPressed: () => gameProvider.cancelSwitchSelection(),
-                child: const Text("Cancel"),
+                child: const Text("Cancelar"),
               ),
             ],
           ),

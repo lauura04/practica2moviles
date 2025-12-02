@@ -60,7 +60,7 @@ class HealSelectionWidget extends StatelessWidget {
               // Cancel Button
               TextButton(
                 onPressed: () => gameProvider.cancelHealSelection(),
-                child: const Text("Cancel"),
+                child: const Text("Cancelar"),
               ),
             ],
           ),

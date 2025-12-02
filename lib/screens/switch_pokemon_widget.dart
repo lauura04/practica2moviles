@@ -21,12 +21,12 @@ class SwitchPokemonWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "${gameProvider.selectedPokemon?.name} fainted!",
+            "¡${gameProvider.selectedPokemon?.name} se debilitó!",
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 10),
           Text(
-            "Choose your next Pokémon:",
+            "Elige tu siguiente Pokémon:",
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 30),

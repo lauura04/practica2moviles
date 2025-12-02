@@ -12,9 +12,9 @@ class GameOverWidget extends StatelessWidget {
     final pokemon = gameProvider.selectedPokemon!; // UPDATED
     final enemy = gameProvider.currentEnemy!;     // UPDATED
 
-    String finalMessage = pokemon.currentHealth > 0 ? "You have won!" : "You have been defeated..."; // UPDATED
+    String finalMessage = pokemon.currentHealth > 0 ? "¡Ganaste!" : "Has sido derrotado..."; // UPDATED
     if (enemy.isAlly) {
-      finalMessage = "New ally acquired!";
+      finalMessage = "¡Nuevo aliado conseguido!";
     }
 
     return Center(
@@ -29,7 +29,7 @@ class GameOverWidget extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => gameProvider.restartGame(),
-            child: const Text("Play Again"),
+            child: const Text("Jugar de nuevo"),
           )
         ],
       ),
