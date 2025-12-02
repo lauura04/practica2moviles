@@ -10,10 +10,13 @@ void main() {
     // 👇 Usa MultiProvider para registrar todos tus providers
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => GameProvider()),
         ChangeNotifierProvider(create: (context) => SettingsProvider()),
-        // Aquí podrías añadir más providers en el futuro
-        // ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProxyProvider<SettingsProvider, GameProvider>(
+          create: (context) => GameProvider(
+            Provider.of<SettingsProvider>(context, listen: false),
+          ),
+          update: (context, settings, gameProvider) => gameProvider!,
+        ),
       ],
       child: const MyApp(),
     ),

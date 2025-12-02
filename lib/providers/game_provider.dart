@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:practica2moviles/providers/settings_provider.dart';
 import '../models/pokemon.dart';
 import '../models/pregunta.dart';
 import 'dart:math';
@@ -23,6 +24,8 @@ enum GameScreen {
 class GameProvider with ChangeNotifier {
   // --- AUDIO ---
   final AudioPlayer _soundEffectPlayer = AudioPlayer();
+  final AudioPlayer _musicPlayer = AudioPlayer();
+  final SettingsProvider _settingsProvider;
 
   // --- ESTADO DEL JUEGO ---
   GameScreen _gameScreen = GameScreen.pokemonSelection;
@@ -31,7 +34,6 @@ class GameProvider with ChangeNotifier {
   String _combatLog = "";
   int _currentEnemyIndex = 0;
   bool _isTurnProcessing = false;
-  bool _combatMusicPlayed = false;
 
   // --- PREGUNTAS ---
   List<Pregunta> _preguntas = [];
@@ -72,24 +74,18 @@ class GameProvider with ChangeNotifier {
   List<Pokemon> get starterPokemonOptions => _starterPokemonOptions;
   bool get isTurnProcessing => _isTurnProcessing;
   Pregunta? get currentQuestion => _currentQuestion;
-  bool get combatMusicPlayed => _combatMusicPlayed;
+  bool get combatMusicPlayed => false; // Keep for compatibility, but it's handled by the UI
 
   Pokemon? get nextEnemy {
     final nextIndex = _currentEnemyIndex + 1;
-    // Check if the next index is valid (within the bounds of the enemy list)
     if (nextIndex < _possibleEnemies.length) {
       return _possibleEnemies[nextIndex];
     }
-    // If there is no next enemy (i.e., we are fighting the last one), return null.
     return null;
   }
 
-  GameProvider() {
+  GameProvider(this._settingsProvider) {
     _loadQuestions();
-  }
-
-  void setCombatMusicPlayed() {
-    _combatMusicPlayed = true;
   }
 
   Future<void> _loadQuestions() async {
@@ -104,11 +100,15 @@ class GameProvider with ChangeNotifier {
 
   void _showRandomQuestion(String action) {
     if (_preguntas.isEmpty) {
-      // Si no hay preguntas, ejecutar acción directamente
       _executeAction(action);
       return;
     }
     _currentQuestion = _preguntas[Random().nextInt(_preguntas.length)];
+    if (_currentQuestion!.tipo == 'musica' && _currentQuestion!.fuenteDato != null) {
+      _soundEffectPlayer.stop();
+      _musicPlayer.setVolume(_settingsProvider.volumenEfectos);
+      _musicPlayer.play(AssetSource(_currentQuestion!.fuenteDato!));
+    }
     _pendingAction = action;
     _gameScreen = GameScreen.answeringQuestion;
     notifyListeners();
@@ -117,10 +117,15 @@ class GameProvider with ChangeNotifier {
   void checkAnswer(String selectedOption) {
     if (_currentQuestion == null) return;
 
+    if (_currentQuestion!.tipo == 'musica') {
+      _musicPlayer.stop();
+    }
+
     bool isCorrect = selectedOption == _currentQuestion!.respuestaCorrecta;
     
     if (isCorrect) {
       if (_pendingAction != 'complete_heal') {
+        _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
         _soundEffectPlayer.play(AssetSource('Music/success-340660.mp3'));
       }
       _combatLog = "¡Correcto! Tienes un turno extra";
@@ -128,6 +133,7 @@ class GameProvider with ChangeNotifier {
         _executeAction(_pendingAction!);
       }
     } else {
+      _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
       _soundEffectPlayer.play(AssetSource('Music/error-mistake-sound.mp3'));
       _combatLog = "Respuesta incorrecta, pierdes turno.";
       _gameScreen = GameScreen.combat;
@@ -153,6 +159,7 @@ class GameProvider with ChangeNotifier {
       _selectedPokemon = playerTeam.firstWhere((p) => p.currentHealth > 0);
     }
     if (_currentEnemyIndex >= _possibleEnemies.length) {
+      _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
       _soundEffectPlayer.play(AssetSource('Music/pokemon-battle-win.mp3'));
       _gameScreen = GameScreen.gameWon;
     } else {
@@ -176,6 +183,8 @@ class GameProvider with ChangeNotifier {
       _currentEnemyIndex++;
       startNextCombat();
     } else {
+      _musicPlayer.stop();
+      _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
       _soundEffectPlayer.play(AssetSource('Music/Loss.mp3'));
       _gameScreen = GameScreen.gameOver;
       notifyListeners();
@@ -197,6 +206,7 @@ class GameProvider with ChangeNotifier {
   void performForcedSwitch(Pokemon newPokemon) {
     if (newPokemon.currentHealth > 0 && newPokemon.isAlly) {
       if (playerTeam.length > 1) {
+        _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
         _soundEffectPlayer.play(AssetSource('Music/pokemon_out.mp3'));
       }
       _selectedPokemon = newPokemon;
@@ -227,6 +237,7 @@ class GameProvider with ChangeNotifier {
 
   void _completeHeal() {
     if (_healTarget == null) return;
+    _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
     _soundEffectPlayer.play(AssetSource('Music/111-pokemon-recovery.mp3'));
     final healAmount = Random().nextInt(26) + 25; // 25-50
     _healTarget!.heal(healAmount);
@@ -240,6 +251,7 @@ class GameProvider with ChangeNotifier {
   void _completeSwitch() {
     if (_switchTarget == null) return;
     if (playerTeam.length > 1) {
+      _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
       _soundEffectPlayer.play(AssetSource('Music/pokemon_out.mp3'));
     }
     _selectedPokemon = _switchTarget;
@@ -259,6 +271,7 @@ class GameProvider with ChangeNotifier {
   void _triggerEnemyTurn() {
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (_selectedPokemon != null && _selectedPokemon!.currentHealth > 0) {
+        _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
         _soundEffectPlayer.play(AssetSource('Music/damage-taken.mp3'));
         _selectedPokemon!.takeDamage(_currentEnemy!.attackPower);
         _combatLog += "${_currentEnemy!.name} ataca de vuelta...";
@@ -322,6 +335,7 @@ class GameProvider with ChangeNotifier {
 
     switch (action) {
       case 'attack':
+        _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
         _soundEffectPlayer.play(AssetSource('Music/damage-taken.mp3'));
         _currentEnemy!.takeDamage(_selectedPokemon!.attackPower);
         _combatLog = "${_selectedPokemon!.name} ataca y hace ${_selectedPokemon!.attackPower} de daño.";
@@ -335,6 +349,7 @@ class GameProvider with ChangeNotifier {
           return;
         }
         if (Random().nextDouble() > 0.5) {
+          _soundEffectPlayer.setVolume(_settingsProvider.volumenEfectos);
           _soundEffectPlayer.play(AssetSource('Music/amigo.mp3'));
           _currentEnemy!.isAlly = true;
           _combatLog = "¡Convenciste a ${_currentEnemy!.name} para unirse a tu equipo!";
@@ -369,6 +384,7 @@ class GameProvider with ChangeNotifier {
 
   // --- REINICIO DEL JUEGO ---
   void restartGame() {
+    _musicPlayer.stop();
     _gameScreen = GameScreen.pokemonSelection;
     _ownedPokemon = [];
     _selectedPokemon = null;
@@ -376,7 +392,6 @@ class GameProvider with ChangeNotifier {
     _combatLog = "";
     _currentEnemyIndex = 0;
     _isTurnProcessing = false;
-    _combatMusicPlayed = false;
 
     for (var pokemon in _starterPokemonOptions) {
       pokemon.resetToInitialState();
