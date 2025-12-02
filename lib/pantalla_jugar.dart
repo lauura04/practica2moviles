@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -20,43 +21,77 @@ class PantallaJugar extends StatefulWidget {
 
 class _PantallaJugarState extends State<PantallaJugar> {
   late AudioPlayer _audioPlayer;
+  StreamSubscription? _playerCompleteSubscription;
+  bool _combatMusicPlayed = false;
+  bool _selectionMusicPlayed = false;
 
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
-    // Ejecutamos la música después de que el widget se haya montado para poder acceder al context de forma segura si fuera necesario, 
-    // aunque para read(listen: false) se puede hacer directo, pero es mejor práctica esperar o usar un bloque asíncrono.
-    _initMusic();
   }
 
-  Future<void> _initMusic() async {
+  Future<void> _playSelectionMusic() async {
     final settings = Provider.of<SettingsProvider>(context, listen: false);
-    
     if (settings.musicActivada) {
-      await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+      await _audioPlayer.stop();
       await _audioPlayer.setVolume(settings.volumenGeneral);
-      // AudioPlayer v6 usa AssetSource y asume la carpeta 'assets/' como raíz.
-      await _audioPlayer.play(AssetSource('Music/MusicaDeFondo.mp3'));
+      await _audioPlayer.play(AssetSource('Music/33-select.your.pokemon.mp3'));
+    }
+  }
+
+  Future<void> _playCombatMusic() async {
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    if (settings.musicActivada) {
+      await _playerCompleteSubscription?.cancel();
+      await _audioPlayer.stop();
+      await _audioPlayer.setVolume(settings.volumenGeneral);
+
+      await _audioPlayer.setReleaseMode(ReleaseMode.stop);
+      await _audioPlayer.play(AssetSource('Music/pokemon-battle.mp3'));
+
+      _playerCompleteSubscription = _audioPlayer.onPlayerComplete.listen((event) {
+        _audioPlayer.setReleaseMode(ReleaseMode.loop);
+        _audioPlayer.play(AssetSource('Music/MusicaDeFondo.mp3'));
+      });
     }
   }
 
   @override
   void dispose() {
-    _audioPlayer.stop();
+    _playerCompleteSubscription?.cancel();
     _audioPlayer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // 1. Nos conectamos a GameProvider para escuchar sus cambios
     final gameProvider = Provider.of<GameProvider>(context);
 
-    // 2. Creamos un widget vacío que llenaremos según el estado
-    Widget currentScreen;
+    // --- Music Logic ---
+    final currentGameScreen = gameProvider.gameScreen;
+    final bool isCombatActive =
+        currentGameScreen == GameScreen.combat ||
+        currentGameScreen == GameScreen.selectingHealTarget ||
+        currentGameScreen == GameScreen.selectingSwitchTarget ||
+        currentGameScreen == GameScreen.answeringQuestion ||
+        currentGameScreen == GameScreen.mustSwitchPokemon;
 
-    // 3. Usamos un switch para decidir qué widget mostrar
+    if (currentGameScreen == GameScreen.pokemonSelection && !_selectionMusicPlayed) {
+      _playSelectionMusic();
+      _selectionMusicPlayed = true;
+    } else if (isCombatActive && !_combatMusicPlayed) {
+      _playCombatMusic();
+      _combatMusicPlayed = true;
+      _selectionMusicPlayed = false; // Reset for next time
+    } else if (!isCombatActive && ! (currentGameScreen == GameScreen.pokemonSelection) && (_combatMusicPlayed || _selectionMusicPlayed)) {
+      _audioPlayer.stop();
+      _combatMusicPlayed = false;
+      _selectionMusicPlayed = false;
+    }
+    // --- End of Music Logic ---
+
+    Widget currentScreen;
     switch (gameProvider.gameScreen) {
       case GameScreen.pokemonSelection:
         currentScreen = const SelectionWidget();
@@ -78,20 +113,26 @@ class _PantallaJugarState extends State<PantallaJugar> {
         break;
     }
 
-    // 4. Devolvemos la pantalla dentro de un Scaffold y con una animación
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Mini RPG de Combate"),
-        backgroundColor: Colors.black54,
-      ),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          // Una bonita transición de fundido (fade)
-          return FadeTransition(opacity: animation, child: child);
-        },
-        // Aquí se coloca el widget que decidimos mostrar
-        child: currentScreen,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        _audioPlayer.stop();
+        Provider.of<GameProvider>(context, listen: false).restartGame();
+        Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Mini RPG de Combate"),
+          backgroundColor: Colors.black54,
+        ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: currentScreen,
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 // lib/providers/game_provider.dart
 
 import 'dart:convert';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/pokemon.dart';
@@ -20,6 +21,9 @@ enum GameScreen {
 }
 
 class GameProvider with ChangeNotifier {
+  // --- AUDIO ---
+  final AudioPlayer _soundEffectPlayer = AudioPlayer();
+
   // --- ESTADO DEL JUEGO ---
   GameScreen _gameScreen = GameScreen.pokemonSelection;
   Pokemon? _selectedPokemon;
@@ -27,6 +31,7 @@ class GameProvider with ChangeNotifier {
   String _combatLog = "";
   int _currentEnemyIndex = 0;
   bool _isTurnProcessing = false;
+  bool _combatMusicPlayed = false;
 
   // --- PREGUNTAS ---
   List<Pregunta> _preguntas = [];
@@ -67,6 +72,7 @@ class GameProvider with ChangeNotifier {
   List<Pokemon> get starterPokemonOptions => _starterPokemonOptions;
   bool get isTurnProcessing => _isTurnProcessing;
   Pregunta? get currentQuestion => _currentQuestion;
+  bool get combatMusicPlayed => _combatMusicPlayed;
 
   Pokemon? get nextEnemy {
     final nextIndex = _currentEnemyIndex + 1;
@@ -82,13 +88,16 @@ class GameProvider with ChangeNotifier {
     _loadQuestions();
   }
 
+  void setCombatMusicPlayed() {
+    _combatMusicPlayed = true;
+  }
+
   Future<void> _loadQuestions() async {
     try {
       final String response = await rootBundle.loadString('assets/preguntas.json');
       final List<dynamic> data = json.decode(response);
       _preguntas = data.map((json) => Pregunta.fromJson(json)).toList();
     } catch (e) {
-      print("Error cargando las preguntas: $e");
       _combatLog = "Error cargando las preguntas. La partida continuara sin estas.";
     }
   }
@@ -111,11 +120,13 @@ class GameProvider with ChangeNotifier {
     bool isCorrect = selectedOption == _currentQuestion!.respuestaCorrecta;
     
     if (isCorrect) {
-      _combatLog = "¡Correcto!.";
+      _soundEffectPlayer.play(AssetSource('Music/success-340660.mp3'));
+      _combatLog = "¡Correcto! Tienes un turno extra";
       if (_pendingAction != null) {
         _executeAction(_pendingAction!);
       }
     } else {
+      _soundEffectPlayer.play(AssetSource('Music/error-mistake-sound.mp3'));
       _combatLog = "Respuesta incorrecta, pierdes turno.";
       _gameScreen = GameScreen.combat;
       _triggerEnemyTurn();
@@ -209,6 +220,7 @@ class GameProvider with ChangeNotifier {
 
   void _completeHeal() {
     if (_healTarget == null) return;
+    _soundEffectPlayer.play(AssetSource('Music/111-pokemon-recovery.mp3'));
     final healAmount = Random().nextInt(26) + 25; // 25-50
     _healTarget!.heal(healAmount);
     _combatLog = "¡${_healTarget!.name} se curó $healAmount HP!";
@@ -238,10 +250,10 @@ class GameProvider with ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (_selectedPokemon != null && _selectedPokemon!.currentHealth > 0) {
         _selectedPokemon!.takeDamage(_currentEnemy!.attackPower);
-        _combatLog += "\n${_currentEnemy!.name} ataca de vuelta...";
+        _combatLog += "${_currentEnemy!.name} ataca de vuelta...";
 
         if (_selectedPokemon!.currentHealth <= 0) {
-          _combatLog += "¡\n${_selectedPokemon!.name} se debilita!";
+          _combatLog += "¡${_selectedPokemon!.name} se debilita!";
           bool canSwitch = playerTeam.any((p) => p.currentHealth > 0);
           if (canSwitch) {
             _gameScreen = GameScreen.mustSwitchPokemon;
@@ -323,11 +335,12 @@ class GameProvider with ChangeNotifier {
     bool combatHasEnded = false;
     if (_currentEnemy!.currentHealth <= 0) {
       combatHasEnded = true;
-      _combatLog += "¡\n${_currentEnemy!.name} ha sido derrotado!";
+      _combatLog += "¡${_currentEnemy!.name} ha sido derrotado!";
+      _soundEffectPlayer.play(AssetSource('Music/level_up.mp3'));
       for (var pokemon in playerTeam) {
         pokemon.levelUp();
       }
-      _combatLog += "\n¡Tu equipo ha subido de nivel!";
+      _combatLog += "¡Tu equipo ha subido de nivel!";
       Future.delayed(const Duration(seconds: 2), () => endCombat(true));
     } else if (_currentEnemy!.isAlly) {
       combatHasEnded = true;
@@ -351,6 +364,7 @@ class GameProvider with ChangeNotifier {
     _combatLog = "";
     _currentEnemyIndex = 0;
     _isTurnProcessing = false;
+    _combatMusicPlayed = false;
 
     for (var pokemon in _starterPokemonOptions) {
       pokemon.resetToInitialState();
@@ -360,6 +374,4 @@ class GameProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-
-  void switchActivePokemon(Pokemon pokemon) {}
 }

@@ -1,10 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:practica2moviles/providers/settings_provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'ajustes_sonido.dart';
 import 'ajustes_visual.dart';
 
-class MenuOpciones extends StatelessWidget {
+class MenuOpciones extends StatefulWidget {
   @override
-  Widget build(BuildContext context){
+  _MenuOpcionesState createState() => _MenuOpcionesState();
+}
+
+class _MenuOpcionesState extends State<MenuOpciones> {
+  late AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _playSelectionMusic();
+  }
+
+  Future<void> _playSelectionMusic() async {
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    if (settings.musicActivada) {
+      await _audioPlayer.stop();
+      await _audioPlayer.setVolume(settings.volumenGeneral);
+      await _audioPlayer.play(AssetSource('Music/33-select-your-pokemon.mp3'));
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -12,7 +44,8 @@ class MenuOpciones extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: (){
+          onPressed: () {
+            _audioPlayer.stop();
             Navigator.pop(context);
           },
         ),
@@ -44,8 +77,7 @@ class MenuOpciones extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/ajustes.png'),
-                        fit: BoxFit.cover
-                    ),
+                        fit: BoxFit.cover),
                   ),
                 ),
                 SizedBox(height: 100),
@@ -56,10 +88,11 @@ class MenuOpciones extends StatelessWidget {
                   imagen: 'assets/chatot.png',
                   color: Colors.red,
                   onPressed: () {
+                    _audioPlayer.stop();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => AjustesSonido()),
-                    );
+                    ).then((_) => _playSelectionMusic());
                   },
                 ),
                 SizedBox(height: 100),
@@ -70,10 +103,12 @@ class MenuOpciones extends StatelessWidget {
                   imagen: 'assets/smeargle.png', // ← Tu imagen visual
                   color: Colors.black,
                   onPressed: () {
+                    _audioPlayer.stop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AjustesVisuales()),
-                    );
+                      MaterialPageRoute(
+                          builder: (context) => AjustesVisuales()),
+                    ).then((_) => _playSelectionMusic());
                   },
                 ),
               ],

@@ -83,7 +83,7 @@ class CombatWidget extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
-                                    "${activePokemon.name}\nLv: ${activePokemon.level}\nHealth: ${activePokemon.currentHealth}/${activePokemon.maxHealth}",
+                                    "${activePokemon.name}\nLv: ${activePokemon.level}\nHP: ${activePokemon.currentHealth}/${activePokemon.maxHealth}",
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 16, height: 1.4),
                                   ),
