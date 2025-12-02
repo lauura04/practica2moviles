@@ -10,36 +10,92 @@ class SelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context, listen: false);
-    // UPDATED: Get the starter options now
     final List<Pokemon> starterOptions = gameProvider.starterPokemonOptions;
 
-    return Center(
+    return Stack(
       key: const ValueKey('SelectionWidget'),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Elige tu Pokémon inicial:", // UPDATED
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+      children: [
+        // Background Image
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/fnd.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: starterOptions.map((pokemon) {
-              return ElevatedButton(
-                onPressed: () {
-                  // UPDATED: Call the new function
-                  gameProvider.selectStarterPokemon(pokemon);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(pokemon.name),
+        ),
+        // Content
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Elige tu Pokémon inicial:",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  shadows: [
+                    const Shadow(
+                      blurRadius: 4.0,
+                      color: Colors.black,
+                      offset: Offset(2.0, 2.0),
+                    ),
+                  ],
                 ),
-              );
-            }).toList(),
+              ),
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: starterOptions.map((pokemon) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Pokemon Image
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.2), // Slight halo effect
+                          boxShadow: [
+                             BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            )
+                          ]
+                        ),
+                        child: Image.asset(
+                          pokemon.imageAsset,
+                          height: 120,
+                          width: 120,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      // Selection Button
+                      ElevatedButton(
+                        onPressed: () {
+                          gameProvider.selectStarterPokemon(pokemon);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.9),
+                          foregroundColor: Colors.black87,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                          child: Text(
+                            pokemon.name,
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -84,7 +84,7 @@ class _MenuOpcionesState extends State<MenuOpciones> {
 
                 // Botón AJUSTES DE SONIDO
                 _BotonOpcion(
-                  texto: 'Ajustes de sonido',
+                  texto: 'Ajustes Sonoros',
                   imagen: 'assets/chatot.png',
                   color: Colors.red,
                   onPressed: () {
