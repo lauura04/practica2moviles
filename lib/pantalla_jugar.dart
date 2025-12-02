@@ -29,6 +29,22 @@ class _PantallaJugarState extends State<PantallaJugar> {
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
+    
+    // Configuración del contexto de audio para permitir la mezcla de sonidos
+    // Esto evita que los efectos de sonido detengan la música de fondo
+    AudioPlayer.global.setAudioContext(AudioContext(
+      android: AudioContextAndroid(
+        isSpeakerphoneOn: true,
+        stayAwake: true,
+        contentType: AndroidContentType.music,
+        usageType: AndroidUsageType.media,
+        audioFocus: AndroidAudioFocus.none, 
+      ),
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.ambient,
+        options: [AVAudioSessionOptions.mixWithOthers],
+      ),
+    ));
   }
 
   Future<void> _playSelectionMusic() async {
