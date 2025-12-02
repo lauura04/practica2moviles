@@ -17,17 +17,16 @@ class TeamMemberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: isSelected
-          ? Colors.blueGrey.shade700 // Highlight the selected Pokémon
+          ? Colors.blueGrey.shade700 //Superponer el pokemon seleccionado
           : Colors.grey.shade800,
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            // --- UPDATED: Removed the placeholder Image/Container ---
-            // The image container has been removed as requested
+
             
-            // const SizedBox(width: 10), // Removed spacing since image is gone
+            // const SizedBox(width: 10),
             
             // --- Pokémon Info ---
             Expanded(

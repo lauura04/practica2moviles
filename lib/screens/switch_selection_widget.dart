@@ -33,9 +33,9 @@ class SwitchSelectionWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 15),
-              // List of team members
+              // Lista del equipo
               ...playerTeam.map((pokemon) {
-                // A Pokemon can only be switched in if it's not fainted AND not already in battle.
+                // Solo se cambia si no esta en combate o debilitado
                 final isFainted = pokemon.currentHealth <= 0;
                 final isAlreadySelected = pokemon == gameProvider.selectedPokemon;
                 final canBeSwitched = !isFainted && !isAlreadySelected;
@@ -48,7 +48,7 @@ class SwitchSelectionWidget extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                     ),
-                    // Disable button if Pokemon is fainted or already active
+                    // Desactivar el boton si el pokemon se debilita o ya esta en combate
                     onPressed: canBeSwitched
                         ? () => gameProvider.performVoluntarySwitch(pokemon)
                         : null,
@@ -60,7 +60,7 @@ class SwitchSelectionWidget extends StatelessWidget {
                 );
               }).toList(),
               const SizedBox(height: 20),
-              // Cancel Button
+              // Cancelar Button
               TextButton(
                 onPressed: () => gameProvider.cancelSwitchSelection(),
                 child: const Text("Cancelar"),

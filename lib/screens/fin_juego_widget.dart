@@ -9,8 +9,8 @@ class GameOverWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context, listen: false);
-    final pokemon = gameProvider.selectedPokemon!; // UPDATED
-    final enemy = gameProvider.currentEnemy!;     // UPDATED
+    final pokemon = gameProvider.selectedPokemon!;
+    final enemy = gameProvider.currentEnemy!;
 
     String finalMessage = pokemon.currentHealth > 0 ? "¡Ganaste!" : "Has sido derrotado..."; // UPDATED
     if (enemy.isAlly) {

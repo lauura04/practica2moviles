@@ -10,7 +10,7 @@ class SwitchPokemonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context);
-    // Filter the list to show only pokemon that can fight
+    //Solo se ven los pokemon disponibles para pelear
     final availablePokemon = gameProvider.playerTeam
         .where((p) => p.currentHealth > 0)
         .toList();
@@ -30,8 +30,8 @@ class SwitchPokemonWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 30),
-          // Create a button for each available Pokemon
-          Wrap( // Use Wrap to handle multiple buttons gracefully
+          //Boton para cada pokemon disponible
+          Wrap( //El wrap sirve para que los botones no se superpongan
             spacing: 10.0,
             runSpacing: 10.0,
             alignment: WrapAlignment.center,
