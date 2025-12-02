@@ -14,6 +14,123 @@
   },
   {
     "tipo": "texto_4_opciones",
+    "dificultad": "dificil",
+    "pregunta":"¿Cuál es el Pokémon más pesado registrado hasta la 9ª Generación?",
+    "opciones": [
+      "Steelix",
+      "Snorlax",
+      "Groudon",
+      "Celesteela"
+      ],
+    "respuestaCorrecta": "Celesteela",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta":"¿Cuál de estos Pokémon no es de tipo planta?",
+    "opciones": [
+      "Chikorita",
+      "Treecko",
+      "Snivy",
+      "Totodile"
+      ],
+    "respuestaCorrecta": "Totodile",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta":"¿Qué objeto te permite revivir a un Pokémon debilitado con todos sus PS?",
+    "opciones": [
+      "Cura Total",
+      "Revivir",
+      "Revivir Maximo",
+      "Restaurar Todo"
+      ],
+    "respuestaCorrecta": "Revivir Maximo",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta":"¿Qué tipos es Lucario?",
+    "opciones": [
+      "Lucha/Siniestro",
+      "Lucha/Acero",
+      "Psíquico/Acero",
+      "Lucha/Dragon"
+      ],
+    "respuestaCorrecta": "Lucha/Acero",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "facil",
+    "pregunta":"¿Cuál es el número q de la Pokedex Nacional?",
+    "opciones": [
+      "Pikachu",
+      "Mew",
+      "Bulbasur",
+      "Rattata"
+      ],
+    "respuestaCorrecta": "Bulbasur",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta":"¿Cuál de los siguientes es un Pokémon tipo fantasma?",
+    "opciones": [
+      "Gengar",
+      "Machoke",
+      "Onix",
+      "Lapras"
+      ],
+    "respuestaCorrecta": "Gengar",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "dificil",
+    "pregunta":"¿Cuál es el equipo villano principal en Pokemon Rubí y Zafiro?",
+    "opciones": [
+      "Team Rocket",
+      "Team Galaxy",
+      "Team Aqua/Team Magma",
+      "Team Plasma"
+      ],
+    "respuestaCorrecta": "Team Aqua/Team Magma",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "facil",
+    "pregunta":"¿Cuál de estos es una evolución de Eevee?",
+    "opciones": [
+      "Pidgey",
+      "Caterpie",
+      "Zubat",
+      "Vaporeon"
+      ],
+    "respuestaCorrecta": "Vaporeon",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
+    "dificultad": "media",
+    "pregunta":"¿Cuál es el Pokémon legendario asociado con los mares de la region de Johto?",
+    "opciones": [
+      "Ho-oh",
+      "Lugia",
+      "Suicune",
+      "Kyogre"
+      ],
+    "respuestaCorrecta": "Lugia",
+    "fuenteDato": null
+  },
+  {
+    "tipo": "texto_4_opciones",
     "dificultad": "facil",
     "pregunta":"¿Cuántos pokémon puedes llevar en el equipo?",
     "opciones": [
