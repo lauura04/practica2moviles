@@ -24,7 +24,7 @@ class GameOverWidget extends StatelessWidget {
         children: [
           Text(
             finalMessage,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.grey),
           ),
           const SizedBox(height: 20),
           ElevatedButton(

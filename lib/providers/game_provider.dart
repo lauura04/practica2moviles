@@ -120,7 +120,9 @@ class GameProvider with ChangeNotifier {
     bool isCorrect = selectedOption == _currentQuestion!.respuestaCorrecta;
     
     if (isCorrect) {
-      _soundEffectPlayer.play(AssetSource('Music/success-340660.mp3'));
+      if (_pendingAction != 'complete_heal') {
+        _soundEffectPlayer.play(AssetSource('Music/success-340660.mp3'));
+      }
       _combatLog = "¡Correcto! Tienes un turno extra";
       if (_pendingAction != null) {
         _executeAction(_pendingAction!);
@@ -151,6 +153,7 @@ class GameProvider with ChangeNotifier {
       _selectedPokemon = playerTeam.firstWhere((p) => p.currentHealth > 0);
     }
     if (_currentEnemyIndex >= _possibleEnemies.length) {
+      _soundEffectPlayer.play(AssetSource('Music/pokemon-battle-win.mp3'));
       _gameScreen = GameScreen.gameWon;
     } else {
       _currentEnemy = _possibleEnemies[_currentEnemyIndex];
@@ -173,6 +176,7 @@ class GameProvider with ChangeNotifier {
       _currentEnemyIndex++;
       startNextCombat();
     } else {
+      _soundEffectPlayer.play(AssetSource('Music/Loss.mp3'));
       _gameScreen = GameScreen.gameOver;
       notifyListeners();
     }
@@ -192,6 +196,9 @@ class GameProvider with ChangeNotifier {
 
   void performForcedSwitch(Pokemon newPokemon) {
     if (newPokemon.currentHealth > 0 && newPokemon.isAlly) {
+      if (playerTeam.length > 1) {
+        _soundEffectPlayer.play(AssetSource('Music/pokemon_out.mp3'));
+      }
       _selectedPokemon = newPokemon;
       _gameScreen = GameScreen.combat;
       _combatLog = "¡Vamos ${_selectedPokemon!.name}!";
@@ -232,6 +239,9 @@ class GameProvider with ChangeNotifier {
 
   void _completeSwitch() {
     if (_switchTarget == null) return;
+    if (playerTeam.length > 1) {
+      _soundEffectPlayer.play(AssetSource('Music/pokemon_out.mp3'));
+    }
     _selectedPokemon = _switchTarget;
     _combatLog = "¡Cambiaste a ${_selectedPokemon!.name}!";
     _gameScreen = GameScreen.combat;
@@ -249,6 +259,7 @@ class GameProvider with ChangeNotifier {
   void _triggerEnemyTurn() {
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (_selectedPokemon != null && _selectedPokemon!.currentHealth > 0) {
+        _soundEffectPlayer.play(AssetSource('Music/damage-taken.mp3'));
         _selectedPokemon!.takeDamage(_currentEnemy!.attackPower);
         _combatLog += "${_currentEnemy!.name} ataca de vuelta...";
 
@@ -311,6 +322,7 @@ class GameProvider with ChangeNotifier {
 
     switch (action) {
       case 'attack':
+        _soundEffectPlayer.play(AssetSource('Music/damage-taken.mp3'));
         _currentEnemy!.takeDamage(_selectedPokemon!.attackPower);
         _combatLog = "${_selectedPokemon!.name} ataca y hace ${_selectedPokemon!.attackPower} de daño.";
         break;
@@ -323,6 +335,7 @@ class GameProvider with ChangeNotifier {
           return;
         }
         if (Random().nextDouble() > 0.5) {
+          _soundEffectPlayer.play(AssetSource('Music/amigo.mp3'));
           _currentEnemy!.isAlly = true;
           _combatLog = "¡Convenciste a ${_currentEnemy!.name} para unirse a tu equipo!";
         } else {
@@ -336,7 +349,6 @@ class GameProvider with ChangeNotifier {
     if (_currentEnemy!.currentHealth <= 0) {
       combatHasEnded = true;
       _combatLog += "¡${_currentEnemy!.name} ha sido derrotado!";
-      _soundEffectPlayer.play(AssetSource('Music/level_up.mp3'));
       for (var pokemon in playerTeam) {
         pokemon.levelUp();
       }

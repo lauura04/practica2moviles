@@ -16,12 +16,12 @@ class GameWonWidget extends StatelessWidget {
         children: [
           Text(
             "¡Felicidades!",
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.amber),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.grey),
           ),
           const SizedBox(height: 10),
           Text(
             "Has derrotado a todos los enemigos.",
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
