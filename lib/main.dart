@@ -4,26 +4,8 @@ import 'package:practica2moviles/menu_principal.dart';
 import 'package:provider/provider.dart';
 import 'package:practica2moviles/providers/settings_provider.dart';
 import 'providers/game_provider.dart';
-import 'package:audioplayers/audioplayers.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Configuración global del contexto de audio para permitir mezcla de sonidos
-  await AudioPlayer.global.setAudioContext(AudioContext(
-    android: AudioContextAndroid(
-      isSpeakerphoneOn: true,
-      stayAwake: true,
-      contentType: AndroidContentType.music,
-      usageType: AndroidUsageType.media,
-      audioFocus: AndroidAudioFocus.none,
-    ),
-    iOS: AudioContextIOS(
-      category: AVAudioSessionCategory.ambient,
-      options: [AVAudioSessionOptions.mixWithOthers],
-    ),
-  ));
-
+void main() {
   runApp(
     // 👇 Usa MultiProvider para registrar todos tus providers
     MultiProvider(
